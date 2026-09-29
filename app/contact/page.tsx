@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
 import { Eyebrow } from "@/components/Eyebrow";
+import { TechHeading } from "@/components/TechHeading";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -13,9 +14,9 @@ export default function ContactPage() {
     <>
       <section className="page-hero page-hero--narrow px" style={{ paddingBottom: 56 }}>
         <Eyebrow label="Contact" />
-        <h1 className="display display--md">
+        <TechHeading className="display display--md">
           Let&apos;s build <em>something.</em>
-        </h1>
+        </TechHeading>
         <p className="lede lede--sm">Tell us what you&apos;re building. We&apos;ll reply within one business day.</p>
       </section>
 

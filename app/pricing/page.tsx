@@ -3,6 +3,7 @@ import Link from "next/link";
 import { faqs } from "@/lib/content";
 import { Eyebrow } from "@/components/Eyebrow";
 import { PlanLadder } from "@/components/PlanLadder";
+import { TechHeading } from "@/components/TechHeading";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -14,9 +15,9 @@ export default function PricingPage() {
     <>
       <section className="page-hero page-hero--narrow px">
         <Eyebrow label="Pricing" />
-        <h1 className="display display--md">
+        <TechHeading className="display display--md">
           Plans that <em>scale with you</em>
-        </h1>
+        </TechHeading>
         <p className="lede lede--sm">Every plan starts with a scoped project. Pricing scales as the relationship does.</p>
       </section>
 

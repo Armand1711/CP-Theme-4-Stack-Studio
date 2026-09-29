@@ -6,6 +6,7 @@ import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
 import { Eyebrow } from "@/components/Eyebrow";
 import { PlanLadder } from "@/components/PlanLadder";
+import { TechHeading } from "@/components/TechHeading";
 
 export default function HomePage() {
   return (
@@ -14,11 +15,11 @@ export default function HomePage() {
       <section className="home-hero px">
         <div className="home-hero__copy">
           <div className="eyebrow eyebrow--accent">Outsourced dev department for SMEs</div>
-          <h1 className="display display--xl">
+          <TechHeading className="display display--xl">
             Your dev team,
             <br />
             <em>without the hiring.</em>
-          </h1>
+          </TechHeading>
           <p className="lede">
             Web, software, UI/UX design, and mobile apps, scoped as a single project or run as your standing dev team.
           </p>

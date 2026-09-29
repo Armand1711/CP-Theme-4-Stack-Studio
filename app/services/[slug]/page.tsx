@@ -6,6 +6,7 @@ import { CaseStudy } from "@/components/CaseStudy";
 import { Eyebrow } from "@/components/Eyebrow";
 import { FlipGrid } from "@/components/FlipGrid";
 import { ProcessSteps } from "@/components/ProcessSteps";
+import { TechHeading } from "@/components/TechHeading";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -28,9 +29,9 @@ export default async function ServicePage({ params }: Props) {
     <>
       <section className="page-hero px">
         <Eyebrow num={service.number} label="Service" />
-        <h1 className="display display--lg">
+        <TechHeading className="display display--lg">
           {service.titleLead} <em>{service.titleEm}</em>
-        </h1>
+        </TechHeading>
         <p className="lede">{service.lede}</p>
         <Link href="/contact" className="btn btn--primary shine">
           Start a Project
