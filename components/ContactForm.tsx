@@ -3,6 +3,7 @@
 import { useId, useState, type FormEvent, type ReactNode } from "react";
 import { contactInterests } from "@/lib/content";
 import { validateContact, type ContactInterest } from "@/lib/contact";
+import { SpecularButton } from "@/components/SpecularButton";
 
 type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
 
@@ -86,7 +87,7 @@ export function ContactForm({ variant = "full", header }: { variant?: "full" | "
           <legend>What are you interested in?</legend>
           <div className="pills">
             {contactInterests.map((opt) => (
-              <button
+              <SpecularButton
                 key={opt}
                 type="button"
                 className="pill"
@@ -94,7 +95,7 @@ export function ContactForm({ variant = "full", header }: { variant?: "full" | "
                 onClick={() => setInterest((cur) => (cur === opt ? null : opt))}
               >
                 {opt}
-              </button>
+              </SpecularButton>
             ))}
           </div>
         </fieldset>
@@ -124,14 +125,15 @@ export function ContactForm({ variant = "full", header }: { variant?: "full" | "
         {fieldError("message")}
       </div>
 
-      <button
+      <SpecularButton
         type="submit"
-        className="btn btn--primary shine"
+        autoAnimate
+        className="btn btn--primary"
         style={{ alignSelf: "flex-start" }}
         disabled={status.kind === "sending"}
       >
         {status.kind === "sending" ? "Sending…" : "Send"}
-      </button>
+      </SpecularButton>
 
       <div aria-live="polite">
         {status.kind === "sent" && (

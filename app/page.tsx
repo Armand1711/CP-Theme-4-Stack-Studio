@@ -7,6 +7,7 @@ import { ContactForm } from "@/components/ContactForm";
 import { Eyebrow } from "@/components/Eyebrow";
 import { PlanLadder } from "@/components/PlanLadder";
 import { TechHeading } from "@/components/TechHeading";
+import { SpecularButton } from "@/components/SpecularButton";
 
 export default function HomePage() {
   return (
@@ -24,9 +25,9 @@ export default function HomePage() {
             Web, software, UI/UX design, and mobile apps, scoped as a single project or run as your standing dev team.
           </p>
           <div className="home-hero__actions">
-            <Link href="/contact" className="btn btn--primary shine">
+            <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
               Start a Project
-            </Link>
+            </SpecularButton>
             <span className="home-hero__note">Fixed-scope projects up to full-team retainers</span>
           </div>
         </div>

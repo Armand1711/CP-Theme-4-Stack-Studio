@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useId, useState } from "react";
 import { services, serviceHref, type ServiceKey } from "@/lib/content";
 import { CaseStudy } from "./CaseStudy";
+import { SpecularButton } from "@/components/SpecularButton";
 
 export function CaseStudyExplorer() {
   const [active, setActive] = useState<ServiceKey>("web");
@@ -14,7 +15,7 @@ export function CaseStudyExplorer() {
     <>
       <div className="explorer__tabs" role="tablist" aria-label="Service">
         {services.map((s) => (
-          <button
+          <SpecularButton
             key={s.key}
             type="button"
             role="tab"
@@ -33,7 +34,7 @@ export function CaseStudyExplorer() {
             }}
           >
             {s.name}
-          </button>
+          </SpecularButton>
         ))}
       </div>
 

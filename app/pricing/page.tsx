@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { faqs } from "@/lib/content";
 import { Eyebrow } from "@/components/Eyebrow";
 import { PlanLadder } from "@/components/PlanLadder";
 import { TechHeading } from "@/components/TechHeading";
+import { SpecularButton } from "@/components/SpecularButton";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -41,9 +41,9 @@ export default function PricingPage() {
 
       <section className="cta-row cta-row--tail px">
         <h2 className="h-plain">Not sure which plan fits?</h2>
-        <Link href="/contact" className="btn btn--primary shine">
+        <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
           Start a Project
-        </Link>
+        </SpecularButton>
       </section>
     </>
   );

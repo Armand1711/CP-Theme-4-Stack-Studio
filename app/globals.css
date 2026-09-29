@@ -139,20 +139,11 @@ h1, h2, h3, p { margin: 0; }
 .tag--home { color: #e0e0e0; border-color: #4a4a4a; }
 .tag--muted { color: var(--text-secondary); border-color: var(--border-14); }
 
-/* Specular sweep: CSS stand-in for the WebGL SpecularButton (see DESIGN.md §4). */
-@property --ss-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-@keyframes ss-shine-sweep { from { --ss-angle: 0deg; } to { --ss-angle: 360deg; } }
-
-.shine { position: relative; isolation: isolate; }
-.shine::before {
-  content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
-  background: conic-gradient(from var(--ss-angle, 0deg), transparent 0deg, transparent 290deg,
-    rgba(255, 255, 255, 0.85) 328deg, rgba(255, 255, 255, 0.25) 345deg, transparent 360deg);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: ss-shine-sweep 3.2s linear infinite;
-}
+/* Specular rim (React Bits SpecularButton, WebGL; see components/SpecularButton.tsx). */
+.specular { position: relative; isolation: isolate; }
+.specular__fx { position: absolute; inset: -20px; pointer-events: none; z-index: 1; } /* = SPECULAR_PAD */
+.specular__fx canvas { display: block; width: 100%; height: 100%; }
+.specular__label { position: relative; z-index: 2; }
 
 /* ==========================================================================
    Nav
@@ -494,10 +485,6 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 10px; }
 @media (prefers-reduced-motion: reduce) {
   .btn, .pill { transition: opacity 100ms ease; }
   .btn:active, .pill:active { transform: none; opacity: 0.7; }
-  .shine::before {
-    animation: none;
-    background: conic-gradient(from 300deg, transparent 0deg, rgba(255, 255, 255, 0.3) 40deg, transparent 90deg);
-  }
   .flip__inner { transition: none; transform: none !important; }
   .flip__face { transition: opacity 150ms ease; }
   .flip__face--back { transform: none; opacity: 0; }
@@ -525,4 +512,10 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 10px; }
   position: absolute; inset: -48px; /* keep in sync with PAD */
   width: calc(100% + 96px); height: calc(100% + 96px);
   pointer-events: none; user-select: none;
+}
+
+/* ClickSpark overlay (components/ClickSpark.tsx) */
+.click-spark {
+  position: fixed; inset: 0; width: 100vw; height: 100vh;
+  pointer-events: none; user-select: none; z-index: 100;
 }

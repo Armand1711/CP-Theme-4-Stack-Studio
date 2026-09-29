@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { plans } from "@/lib/content";
+import { SpecularButton } from "@/components/SpecularButton";
 
 /** Three-tier pricing ladder. `detailed` adds the facts row and steps type up (pricing page). */
 export function PlanLadder({ detailed = false }: { detailed?: boolean }) {
@@ -20,14 +21,14 @@ export function PlanLadder({ detailed = false }: { detailed?: boolean }) {
                 </Link>
               )}
               {p.id === "growth" && (
-                <Link href="/contact" className="btn btn--outline btn--md">
+                <SpecularButton href="/contact" className="btn btn--outline btn--md">
                   Start a Project
-                </Link>
+                </SpecularButton>
               )}
               {p.id === "team" && (
-                <Link href="/contact" className="btn btn--primary btn--md shine">
+                <SpecularButton href="/contact" autoAnimate className="btn btn--primary btn--md">
                   Start a Project
-                </Link>
+                </SpecularButton>
               )}
             </div>
           </div>

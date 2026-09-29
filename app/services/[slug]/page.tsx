@@ -7,6 +7,7 @@ import { Eyebrow } from "@/components/Eyebrow";
 import { FlipGrid } from "@/components/FlipGrid";
 import { ProcessSteps } from "@/components/ProcessSteps";
 import { TechHeading } from "@/components/TechHeading";
+import { SpecularButton } from "@/components/SpecularButton";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -33,9 +34,9 @@ export default async function ServicePage({ params }: Props) {
           {service.titleLead} <em>{service.titleEm}</em>
         </TechHeading>
         <p className="lede">{service.lede}</p>
-        <Link href="/contact" className="btn btn--primary shine">
+        <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
           Start a Project
-        </Link>
+        </SpecularButton>
       </section>
 
       <section className="block px">
@@ -66,9 +67,9 @@ export default async function ServicePage({ params }: Props) {
             See how {service.name} fits into a plan →
           </Link>
         </div>
-        <Link href="/contact" className="btn btn--primary shine">
+        <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
           Start a Project
-        </Link>
+        </SpecularButton>
       </section>
     </>
   );

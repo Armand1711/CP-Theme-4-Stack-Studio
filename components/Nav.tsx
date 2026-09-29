@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { services, serviceHref } from "@/lib/content";
 import { LogoMark } from "./Logo";
+import { SpecularButton } from "@/components/SpecularButton";
 
 const links = [
   ...services.map((s) => ({ href: serviceHref(s), label: s.navLabel })),
@@ -38,11 +39,11 @@ export function Nav() {
         </Link>
         <nav className="nav__links" aria-label="Primary">
           {items}
-          <Link href="/contact" className="btn btn--primary btn--sm shine">
+          <SpecularButton href="/contact" autoAnimate className="btn btn--primary btn--sm">
             Start a Project
-          </Link>
+          </SpecularButton>
         </nav>
-        <button
+        <SpecularButton
           type="button"
           className="nav__toggle"
           aria-expanded={open}
@@ -50,13 +51,13 @@ export function Nav() {
           onClick={() => setOpen((o) => !o)}
         >
           {open ? "Close" : "Menu"}
-        </button>
+        </SpecularButton>
       </div>
       <nav id="nav-drawer" className="nav__drawer px" data-open={open} aria-label="Primary (mobile)">
         {items}
-        <Link href="/contact" className="btn btn--primary btn--sm shine">
+        <SpecularButton href="/contact" autoAnimate className="btn btn--primary btn--sm">
           Start a Project
-        </Link>
+        </SpecularButton>
       </nav>
     </header>
   );

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Nav } from "@/components/Nav";
+import { ClickSpark } from "@/components/ClickSpark";
 import { Footer } from "@/components/Footer";
 import "./globals.css";
 
@@ -21,9 +22,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <Nav />
-        <main>{children}</main>
-        <Footer />
+        <ClickSpark sparkColor="#F5F3EF" sparkSize={10} sparkRadius={18} sparkCount={8} duration={400}>
+          <Nav />
+          <main>{children}</main>
+          <Footer />
+        </ClickSpark>
       </body>
     </html>
   );
