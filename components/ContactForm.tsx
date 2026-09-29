@@ -1,6 +1,7 @@
 "use client";
 
-import { useId, useState, type FormEvent, type ReactNode } from "react";
+import { useId, useState, type FormEvent } from "react";
+import { ArrowUpRight, Check } from "@phosphor-icons/react";
 import { contactInterests } from "@/lib/content";
 import { validateContact, type ContactInterest } from "@/lib/contact";
 import { SpecularButton } from "@/components/SpecularButton";
@@ -11,7 +12,7 @@ type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind
  * `full` (contact page): service picker + company field + 5-row message.
  * `compact` (home page): name, email, message only.
  */
-export function ContactForm({ variant = "full", header }: { variant?: "full" | "compact"; header?: ReactNode }) {
+export function ContactForm({ variant = "full" }: { variant?: "full" | "compact" }) {
   const id = useId();
   const [interest, setInterest] = useState<ContactInterest | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -34,6 +35,7 @@ export function ContactForm({ variant = "full", header }: { variant?: "full" | "
     setErrors(found);
     if (Object.keys(found).length) {
       setStatus({ kind: "idle" });
+      form.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
       return;
     }
 
@@ -58,6 +60,23 @@ export function ContactForm({ variant = "full", header }: { variant?: "full" | "
     }
   }
 
+  if (status.kind === "sent") {
+    return (
+      <div className="contact__form surface" aria-live="polite">
+        <div className="form-sent">
+          <span className="form-sent__icon">
+            <Check size={24} weight="bold" aria-hidden />
+          </span>
+          <h3>Message received.</h3>
+          <p className="body-2">We&apos;ll reply within one business day, usually sooner.</p>
+          <SpecularButton type="button" className="btn btn--ghost btn--sm" onClick={() => setStatus({ kind: "idle" })}>
+            Send another message
+          </SpecularButton>
+        </div>
+      </div>
+    );
+  }
+
   const fieldProps = (name: string) => ({
     id: `${id}-${name}`,
     name,
@@ -80,8 +99,7 @@ export function ContactForm({ variant = "full", header }: { variant?: "full" | "
   );
 
   return (
-    <form className="contact__form" onSubmit={onSubmit} noValidate>
-      {header}
+    <form className="contact__form surface" onSubmit={onSubmit} noValidate>
       {full && (
         <fieldset className="field">
           <legend>What are you interested in?</legend>
@@ -125,21 +143,14 @@ export function ContactForm({ variant = "full", header }: { variant?: "full" | "
         {fieldError("message")}
       </div>
 
-      <SpecularButton
-        type="submit"
-        autoAnimate
-        className="btn btn--primary"
-        style={{ alignSelf: "flex-start" }}
-        disabled={status.kind === "sending"}
-      >
-        {status.kind === "sending" ? "Sending…" : "Send"}
-      </SpecularButton>
-
-      <div aria-live="polite">
-        {status.kind === "sent" && (
-          <p className="form-status form-status--ok">Thanks. We&apos;ll reply within one business day.</p>
-        )}
-        {status.kind === "error" && <p className="form-status form-status--err">{status.message}</p>}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+        <SpecularButton type="submit" autoAnimate className="btn btn--primary" disabled={status.kind === "sending"}>
+          {status.kind === "sending" ? "Sending…" : "Send"}
+          {status.kind !== "sending" && <ArrowUpRight size={18} weight="bold" aria-hidden />}
+        </SpecularButton>
+        <div aria-live="polite">
+          {status.kind === "error" && <p className="form-status form-status--err">{status.message}</p>}
+        </div>
       </div>
     </form>
   );

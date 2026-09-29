@@ -1,49 +1,53 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { faqs } from "@/lib/content";
-import { Eyebrow } from "@/components/Eyebrow";
+import { PlanFinder } from "@/components/PlanFinder";
 import { PlanLadder } from "@/components/PlanLadder";
+import { Spotlight } from "@/components/Spotlight";
 import { TechHeading } from "@/components/TechHeading";
-import { SpecularButton } from "@/components/SpecularButton";
 
 export const metadata: Metadata = {
   title: "Pricing",
   description: "Every plan starts with a scoped project. Pricing scales as the relationship does.",
 };
 
+const i = (n: number) => ({ "--i": n }) as CSSProperties;
+
 export default function PricingPage() {
   return (
     <>
-      <section className="page-hero page-hero--narrow px">
-        <Eyebrow label="Pricing" />
-        <TechHeading className="display display--md">
-          Plans that <em>scale with you</em>
-        </TechHeading>
-        <p className="lede lede--sm">Every plan starts with a scoped project. Pricing scales as the relationship does.</p>
-      </section>
-
-      <section className="px" style={{ paddingBottom: 32 }}>
-        <PlanLadder detailed />
-      </section>
-
-      <section className="section px">
-        <h2 className="h-plain" style={{ fontSize: 24, marginBottom: 32 }}>
-          Questions
-        </h2>
-        <div className="faq">
-          {faqs.map((f) => (
-            <div key={f.q} className="faq__item">
-              <h3 className="faq__q">{f.q}</h3>
-              <p className="faq__a">{f.a}</p>
-            </div>
-          ))}
+      <section className="wrap hero hero--inner hero--text">
+        <div className="hero__glow" aria-hidden="true" />
+        <div className="hero__copy load-in">
+          <TechHeading className="display display--h1" style={i(0)}>
+            Plans that <em>scale with you</em>
+          </TechHeading>
+          <p className="lede" style={i(1)}>
+            Every plan starts with a scoped project. Pricing scales as the relationship does.
+          </p>
         </div>
       </section>
 
-      <section className="cta-row cta-row--tail px">
-        <h2 className="h-plain">Not sure which plan fits?</h2>
-        <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
-          Start a Project
-        </SpecularButton>
+      <section className="wrap">
+        <PlanFinder>
+          <Spotlight>
+            <PlanLadder detailed />
+          </Spotlight>
+        </PlanFinder>
+      </section>
+
+      <section className="wrap section">
+        <div className="section-head" data-reveal>
+          <h2 className="display display--h2">Questions</h2>
+        </div>
+        <div className="faq">
+          {faqs.map((f, n) => (
+            <div key={f.q} className="faq__item" data-reveal style={{ "--d": n } as CSSProperties}>
+              <h3 className="faq__q">{f.q}</h3>
+              <p className="body-2">{f.a}</p>
+            </div>
+          ))}
+        </div>
       </section>
     </>
   );

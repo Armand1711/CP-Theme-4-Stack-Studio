@@ -25,6 +25,8 @@ export type Service = {
   summary: string;
   included: IncludedItem[];
   caseStudy: CaseStudy | null;
+  /** Heading + intro for the page's interactive signature section. Heading renders as `lead <em>em</em>`. */
+  demo: { lead: string; em: string; lede: string };
 };
 
 export const gcSolar: CaseStudy = {
@@ -52,6 +54,7 @@ export const services: Service[] = [
       { id: "perf-seo", title: "Performance & SEO", body: "Sites that load fast and rank, not just look good." },
     ],
     caseStudy: gcSolar,
+    demo: { lead: "Built to fit", em: "every screen.", lede: "Drag the handle or pick a device. The example site reflows the way every site we ship does." },
   },
   {
     key: "software",
@@ -70,6 +73,7 @@ export const services: Service[] = [
       { id: "automation", title: "Workflow automation", body: "Cut manual steps out of repetitive business processes." },
     ],
     caseStudy: null,
+    demo: { lead: "Watch the busywork", em: "disappear.", lede: "Press run to send a new enquiry through a pipeline like the ones we automate. Drag the steps around if you like." },
   },
   {
     key: "uiux",
@@ -88,6 +92,7 @@ export const services: Service[] = [
       { id: "prototyping", title: "Prototyping", body: "Clickable prototypes to validate ideas before a line of code ships." },
     ],
     caseStudy: null,
+    demo: { lead: "From wireframe", em: "to finished.", lede: "Drag across the screen to compare the same booking flow before and after design." },
   },
   {
     key: "mobile",
@@ -106,6 +111,7 @@ export const services: Service[] = [
       { id: "stores", title: "App store deployment & maintenance", body: "Submission, updates and ongoing support after launch." },
     ],
     caseStudy: null,
+    demo: { lead: "Made to feel right", em: "in the hand.", lede: "Drag the sheet up, flick it down. It tracks your finger, carries your momentum and settles like a native app." },
   },
 ];
 

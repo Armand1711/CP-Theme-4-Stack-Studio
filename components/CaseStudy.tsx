@@ -1,40 +1,33 @@
 import Link from "next/link";
+import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import type { CaseStudy as CaseStudyData } from "@/lib/content";
 
-export function CaseStudy({
-  study,
-  kicker,
-  href,
-  tone = "home",
-}: {
-  study: CaseStudyData;
-  kicker?: string;
-  href?: string;
-  tone?: "home" | "band";
-}) {
+export function CaseStudy({ study, kicker, href }: { study: CaseStudyData; kicker?: string; href?: string }) {
   return (
     <div className="case">
       <div className="case__copy">
+        {kicker && <p className="mono case__kicker" style={{ fontSize: 13 }}>{kicker}</p>}
         <h3>{study.title}</h3>
-        {kicker && <div className="case__kicker">{kicker}</div>}
-        <p>{study.summary}</p>
+        <p className="body-2" style={{ maxWidth: "46ch" }}>
+          {study.summary}
+        </p>
         <div className="case__tags">
           {study.tags.map((t) => (
-            <span key={t} className={tone === "home" ? "tag tag--home" : "tag"}>
+            <span key={t} className="tag">
               {t}
             </span>
           ))}
         </div>
         {href && (
-          <Link href={href} className="case__link">
-            View case study →
+          <Link href={href} className="textlink textlink--accent">
+            View case study
+            <ArrowRight size={16} weight="bold" aria-hidden />
           </Link>
         )}
       </div>
-      <div className="case__visual">
-        <div className={tone === "band" ? "visual-placeholder visual-placeholder--dark" : "visual-placeholder"}>
-          <span>Case study visual: placeholder</span>
-        </div>
+      {/* TODO: real GC Solar screenshot, 1600x1000. */}
+      <div className="image-slot">
+        <span>Case study image goes here</span>
       </div>
     </div>
   );

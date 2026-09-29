@@ -22,9 +22,9 @@ const EFFECT_KEYS = [
   "thickness", "speed", "followMouse", "proximity", "autoAnimate",
 ] as const;
 
-// Tuned for the site's square, bordered buttons: no radius, no extra base stroke (the CSS border is the base).
+// Tuned for the site's pill buttons (radius clamps to h/2); no extra base stroke, the CSS border is the base.
 const DEFAULTS: SpecularSettings = {
-  radius: 0,
+  radius: 999,
   lineColor: "#ffffff",
   baseColor: "#525252",
   baseOpacity: 0,

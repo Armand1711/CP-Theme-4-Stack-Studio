@@ -153,6 +153,7 @@ export function TechHeading({
     const lens = { x: 0, y: 0 };
     const frame = { x1: 0, y1: 0, x2: 0, y2: 0, alpha: 0, index: -1 };
 
+    const requested = new Set<string>();
     const invalidate = () => {
       layoutKey = "";
       wakeRef.current();
@@ -216,6 +217,12 @@ export function TechHeading({
         if (!el) continue;
         const cs = getComputedStyle(el);
         const font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+        // A swapped-in webfont can change glyph positions without resizing the heading, so load each
+        // face explicitly and re-measure once it's ready.
+        if (!requested.has(font)) {
+          requested.add(font);
+          document.fonts?.load(font, node.data).then(invalidate, invalidate);
+        }
         const upper = cs.textTransform === "uppercase";
         setFont(scratchCtx, font);
         const ascent = scratchCtx.measureText("H").fontBoundingBoxAscent;
@@ -659,6 +666,7 @@ export function TechHeading({
     });
     intersectionObserver.observe(host);
     document.fonts?.ready.then(invalidate, invalidate);
+    document.fonts?.addEventListener("loadingdone", invalidate);
 
     resize();
 
@@ -668,6 +676,7 @@ export function TechHeading({
       wakeRef.current = () => {};
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
+      document.fonts?.removeEventListener("loadingdone", invalidate);
       host.removeEventListener("pointermove", onMove);
       host.removeEventListener("pointerenter", onMove);
       host.removeEventListener("pointerdown", onDown);

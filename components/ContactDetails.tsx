@@ -4,7 +4,7 @@ const nextSteps = ["We reply within one business day", "A short scoping call", "
 
 export function ContactDetails({ showNextSteps = false }: { showNextSteps?: boolean }) {
   return (
-    <div className="contact__aside">
+    <aside className="contact__aside">
       <div>
         <div className="meta__label">Prefer email?</div>
         <div className="meta__value">{contactDetails.email}</div>
@@ -29,11 +29,11 @@ export function ContactDetails({ showNextSteps = false }: { showNextSteps?: bool
       <div className="socials">
         {/* TODO: turn into links once profile URLs exist. */}
         {contactDetails.socials.map((s) => (
-          <span key={s} className="tag tag--muted">
+          <span key={s} className="tag">
             {s}
           </span>
         ))}
       </div>
-    </div>
+    </aside>
   );
 }

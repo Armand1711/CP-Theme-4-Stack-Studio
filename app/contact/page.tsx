@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
-import { Eyebrow } from "@/components/Eyebrow";
 import { TechHeading } from "@/components/TechHeading";
 
 export const metadata: Metadata = {
@@ -9,20 +9,32 @@ export const metadata: Metadata = {
   description: "Tell us what you're building. We'll reply within one business day.",
 };
 
+const i = (n: number) => ({ "--i": n }) as CSSProperties;
+
 export default function ContactPage() {
   return (
     <>
-      <section className="page-hero page-hero--narrow px" style={{ paddingBottom: 56 }}>
-        <Eyebrow label="Contact" />
-        <TechHeading className="display display--md">
-          Let&apos;s build <em>something.</em>
-        </TechHeading>
-        <p className="lede lede--sm">Tell us what you&apos;re building. We&apos;ll reply within one business day.</p>
+      <section className="wrap hero hero--inner hero--text">
+        <div className="hero__glow" aria-hidden="true" />
+        <div className="hero__copy load-in">
+          <TechHeading className="display display--h1" style={i(0)}>
+            Let&apos;s build <em>something.</em>
+          </TechHeading>
+          <p className="lede" style={i(1)}>
+            Tell us what you&apos;re building. We&apos;ll reply within one business day.
+          </p>
+        </div>
       </section>
 
-      <section className="contact contact--page px">
-        <ContactForm variant="full" />
-        <ContactDetails showNextSteps />
+      <section className="wrap" style={{ paddingBottom: "clamp(80px, 10vw, 128px)" }}>
+        <div className="contact load-in">
+          <div style={i(2)}>
+            <ContactForm variant="full" />
+          </div>
+          <div style={i(3)}>
+            <ContactDetails showNextSteps />
+          </div>
+        </div>
       </section>
     </>
   );
