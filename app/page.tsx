@@ -38,7 +38,7 @@ export default function HomePage() {
             Your dev team, <em>without the hiring.</em>
           </TechHeading>
           <p className="lede" style={i(2)}>
-            Web, software, UI/UX design, and mobile apps, scoped as a single project or run as your standing dev team.
+            Web, software, design and apps. One project, or your whole dev team.
           </p>
           <div className="hero__actions" style={i(3)}>
             <Magnetic>
