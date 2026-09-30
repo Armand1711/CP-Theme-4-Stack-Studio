@@ -872,6 +872,81 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 12px; }
 }
 
 /* ==========================================================================
+   Kinetic layer: background, type, marquee
+   ========================================================================== */
+
+/* Interactive dot field (components/DotField.tsx), behind all content. */
+.dot-field { position: fixed; inset: 0; z-index: -1; width: 100vw; height: 100vh; pointer-events: none; }
+
+/* Word-by-word headline reveal (components/SplitHeading.tsx). */
+.reveal-ready .split[data-reveal]:not(.is-in) { opacity: 1; transform: none; }
+.sw { display: inline-block; overflow: hidden; vertical-align: top; padding: 0 0.06em 0.14em 0; margin: 0 -0.06em -0.14em 0; }
+.sw > span { display: inline-block; transition: transform 1000ms var(--ease-out); transition-delay: calc(var(--w, 0) * 55ms); }
+.reveal-ready .split:not(.is-in) .sw > span { transform: translateY(110%) rotate(4deg); }
+
+/* Scroll progress line along the bottom of the nav pill. */
+.nav__bar { position: relative; }
+@keyframes nav-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@supports (animation-timeline: scroll()) {
+  .nav__bar::after {
+    content: ""; position: absolute; left: 28px; right: 28px; bottom: -1px; height: 2px; border-radius: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent)); transform-origin: left;
+    animation: nav-progress linear both; animation-timeline: scroll(root);
+  }
+}
+
+/* Hero ambience drifts slowly. */
+@keyframes glow-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6%, 8%) scale(1.15); }
+  100% { transform: translate(4%, -4%) scale(0.95); }
+}
+.hero__glow { animation: glow-drift 16s ease-in-out infinite alternate; }
+
+/* Service tiles: icon-led, with a lift on hover. */
+.bento__icon {
+  display: inline-grid; place-items: center; width: 72px; height: 72px; border-radius: 20px;
+  background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(243, 108, 33, 0.25);
+  transition: transform 500ms var(--ease-out), background-color 300ms ease, color 300ms ease;
+}
+.bento__cell:nth-child(1) .bento__icon { width: 96px; height: 96px; border-radius: 26px; }
+@media (hover: hover) and (pointer: fine) {
+  .bento__cell:hover .bento__icon { transform: translateY(-4px) rotate(-6deg) scale(1.06); background: var(--accent); color: var(--accent-ink); }
+}
+.bento__cell h3 { font-size: clamp(24px, 2.4vw, 34px); margin-top: 22px; }
+
+/* Home service marquee (components/ServiceMarquee.tsx). */
+.marquee { position: relative; overflow: hidden; padding-block: clamp(24px, 4vw, 48px); border-block: 1px solid var(--line); }
+.marquee__scroll { will-change: transform; }
+.marquee__track { display: flex; width: max-content; animation: marquee-loop 38s linear infinite; }
+.marquee:hover .marquee__track { animation-play-state: paused; }
+.marquee__item { display: flex; align-items: center; gap: clamp(20px, 3vw, 44px); padding-right: clamp(20px, 3vw, 44px); }
+.marquee__word {
+  font-size: clamp(56px, 9vw, 140px); font-weight: 600; letter-spacing: -0.05em; line-height: 1; white-space: nowrap;
+  transition: color 300ms ease, -webkit-text-stroke-color 300ms ease;
+}
+.marquee__item:nth-child(odd) .marquee__word { color: var(--text); }
+.marquee__item:nth-child(even) .marquee__word { color: transparent; -webkit-text-stroke: 1.5px rgba(245, 243, 239, 0.5); font-style: italic; }
+@media (hover: hover) and (pointer: fine) {
+  .marquee__item .marquee__word:hover { color: var(--accent); -webkit-text-stroke-color: var(--accent); }
+}
+.marquee__sep { width: clamp(28px, 4vw, 56px); height: auto; color: var(--accent); flex-shrink: 0; }
+@keyframes marquee-loop { to { transform: translateX(-50%); } }
+@keyframes marquee-scroll { from { transform: translateX(8%); } to { transform: translateX(-8%); } }
+@supports (animation-timeline: view()) {
+  .marquee__scroll { animation: marquee-scroll linear both; animation-timeline: view(); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw > span { transition: none; }
+  .reveal-ready .split:not(.is-in) .sw > span { transform: none; }
+  .hero__glow { animation: none; }
+  .marquee__track, .marquee__scroll { animation: none; }
+  .marquee { overflow-x: auto; }
+  .nav__bar::after { display: none; }
+}
+
+/* ==========================================================================
    Accessibility preferences
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {

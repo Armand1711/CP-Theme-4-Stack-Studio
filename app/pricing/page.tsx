@@ -5,6 +5,7 @@ import { PlanFinder } from "@/components/PlanFinder";
 import { PlanLadder } from "@/components/PlanLadder";
 import { Spotlight } from "@/components/Spotlight";
 import { TechHeading } from "@/components/TechHeading";
+import { SplitHeading } from "@/components/SplitHeading";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -38,7 +39,7 @@ export default function PricingPage() {
 
       <section className="wrap section">
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">Questions</h2>
+          <SplitHeading className="display display--h2">Questions</SplitHeading>
         </div>
         <div className="faq">
           {faqs.map((f, n) => (

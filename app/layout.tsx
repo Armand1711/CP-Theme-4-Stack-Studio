@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Geist_Mono } from "next/font/google";
 import { ClickSpark } from "@/components/ClickSpark";
+import { DotField } from "@/components/DotField";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { RevealObserver } from "@/components/RevealObserver";
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // so page navigations jump instead of animating.
     <html lang="en" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth">
       <body>
+        <DotField />
         <a href="#main" className="skip-link">
           Skip to content
         </a>

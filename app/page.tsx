@@ -1,7 +1,12 @@
 import Link from "next/link";
-import type { CSSProperties } from "react";
-import { ArrowDown, ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
-import { services, serviceHref } from "@/lib/content";
+import { createElement, type CSSProperties } from "react";
+import {
+  ArrowDown, ArrowRight, ArrowUpRight, Browser, Code, DeviceMobile, PenNib,
+} from "@phosphor-icons/react/dist/ssr";
+import type { Icon } from "@phosphor-icons/react";
+import { services, serviceHref, type ServiceKey } from "@/lib/content";
+import { Scramble } from "@/components/Scramble";
+import { ServiceMarquee } from "@/components/ServiceMarquee";
 import { CaseStudyExplorer } from "@/components/CaseStudyExplorer";
 import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
@@ -11,11 +16,13 @@ import { Spotlight } from "@/components/Spotlight";
 import { StackVisual } from "@/components/StackVisual";
 import { Magnetic } from "@/components/Magnetic";
 import { TechHeading } from "@/components/TechHeading";
+import { SplitHeading } from "@/components/SplitHeading";
 
 const i = (n: number) => ({ "--i": n }) as CSSProperties;
 const d = (n: number) => ({ "--d": n }) as CSSProperties;
 
 const BENTO_ART = ["glow", "dots", "grid", "warm"];
+const BENTO_ICON: Record<ServiceKey, Icon> = { web: Browser, software: Code, uiux: PenNib, mobile: DeviceMobile };
 
 export default function HomePage() {
   return (
@@ -25,7 +32,7 @@ export default function HomePage() {
         <div className="hero__glow" aria-hidden="true" />
         <div className="hero__copy load-in">
           <p className="eyebrow" style={i(0)}>
-            Outsourced dev department for SMEs
+            <Scramble text="Outsourced dev department for SMEs" />
           </p>
           <TechHeading className="display display--hero" style={i(1)}>
             Your dev team, <em>without the hiring.</em>
@@ -51,13 +58,14 @@ export default function HomePage() {
         <StackVisual />
       </section>
 
+      <ServiceMarquee />
+
       {/* Services: asymmetric bento, one cell per discipline */}
       <section id="services" className="wrap section">
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">
+          <SplitHeading className="display display--h2">
             Four disciplines. <em>One team.</em>
-          </h2>
-          <p className="lede">Each one stands on its own, and every one is run by the same people.</p>
+          </SplitHeading>
         </div>
         <Spotlight className="bento" tilt>
           {services.map((s, n) => (
@@ -75,9 +83,10 @@ export default function HomePage() {
                 </span>
               )}
               <div>
-                <span className="bento__num">{s.number}</span>
+                <span className="bento__icon" aria-hidden="true">
+                  {createElement(BENTO_ICON[s.key], { size: n === 0 ? 56 : 40, weight: "duotone" })}
+                </span>
                 <h3>{s.name}</h3>
-                <p className="body-2">{s.summary}</p>
               </div>
               <div className="bento__foot">
                 <div className="bento__tags">
@@ -100,10 +109,10 @@ export default function HomePage() {
       {/* Proof: one wide panel with a tabbed explorer */}
       <section id="work" className="wrap section" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">
+          <SplitHeading className="display display--h2">
             See the work behind <em>each service.</em>
-          </h2>
-          <p className="lede">Pick a service to see a real proof point from the field.</p>
+          </SplitHeading>
+          <p className="lede">Pick a service. See the proof.</p>
         </div>
         <div className="explorer surface" data-reveal>
           <CaseStudyExplorer />
@@ -113,9 +122,9 @@ export default function HomePage() {
       {/* Plans: stacked ladder */}
       <section id="plans" className="wrap section" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">
+          <SplitHeading className="display display--h2">
             Scoped to how you <em>grow.</em>
-          </h2>
+          </SplitHeading>
           <p className="lede">Every plan starts with a scoped project. Pricing scales as the relationship does.</p>
           <Link href="/pricing" className="textlink textlink--accent">
             Compare plans in detail
@@ -130,9 +139,9 @@ export default function HomePage() {
       {/* Contact: form + details */}
       <section id="contact" className="wrap section" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">
+          <SplitHeading className="display display--h2">
             Let&apos;s <em>build something.</em>
-          </h2>
+          </SplitHeading>
           <p className="lede">Tell us what you&apos;re building. We&apos;ll reply within one business day.</p>
         </div>
         <div className="contact" data-reveal>

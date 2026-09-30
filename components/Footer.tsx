@@ -6,6 +6,7 @@ import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { services, serviceHref } from "@/lib/content";
 import { LogoFull } from "./Logo";
 import { SpecularButton } from "./SpecularButton";
+import { SplitHeading } from "@/components/SplitHeading";
 
 export function Footer() {
   const pathname = usePathname();
@@ -17,9 +18,9 @@ export function Footer() {
       <div className="wrap">
         {showCta && (
           <div className="footer__cta surface" data-reveal>
-            <h2 className="display display--h2">
+            <SplitHeading className="display display--h2">
               Have something <em>to build?</em>
-            </h2>
+            </SplitHeading>
             <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
               Start a Project
               <ArrowUpRight size={18} weight="bold" aria-hidden />

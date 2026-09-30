@@ -15,6 +15,7 @@ import { PipelineDemo } from "@/components/demos/PipelineDemo";
 import { ResponsiveDemo } from "@/components/demos/ResponsiveDemo";
 import { SheetDemo } from "@/components/demos/SheetDemo";
 import type { ServiceKey } from "@/lib/content";
+import { SplitHeading } from "@/components/SplitHeading";
 
 const DEMOS: Record<ServiceKey, () => React.ReactNode> = {
   web: () => <ResponsiveDemo />,
@@ -69,9 +70,9 @@ export default async function ServicePage({ params }: Props) {
 
       <section className="wrap section signature" data-service={service.key} style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">
+          <SplitHeading className="display display--h2">
             {service.demo.lead} <em>{service.demo.em}</em>
-          </h2>
+          </SplitHeading>
           <p className="lede">{service.demo.lede}</p>
         </div>
         <div className="signature__stage" data-reveal>
@@ -81,14 +82,14 @@ export default async function ServicePage({ params }: Props) {
 
       <section className="wrap section" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">What&apos;s included</h2>
+          <SplitHeading className="display display--h2">What&apos;s included</SplitHeading>
         </div>
         <FlipGrid items={service.included} />
       </section>
 
       <section className="wrap section" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
-          <h2 className="display display--h2">How it runs</h2>
+          <SplitHeading className="display display--h2">How it runs</SplitHeading>
         </div>
         <ProcessSteps />
       </section>
@@ -110,9 +111,9 @@ export default async function ServicePage({ params }: Props) {
 
       <section className="wrap" style={{ paddingBottom: "clamp(40px, 6vw, 80px)" }}>
         <div className="cta-band" data-reveal>
-          <h2 className="display display--h2" style={{ fontSize: "clamp(26px, 2.6vw, 36px)" }}>
+          <SplitHeading className="display display--h2" style={{ fontSize: "clamp(26px, 2.6vw, 36px)" }}>
             Where this fits in a plan
-          </h2>
+          </SplitHeading>
           <Link href="/pricing" className="textlink textlink--accent">
             See how {service.name} fits into a plan
             <ArrowRight size={16} weight="bold" aria-hidden />
