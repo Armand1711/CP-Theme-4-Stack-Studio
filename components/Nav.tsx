@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { services, serviceHref } from "@/lib/content";
-import { LogoMark } from "./Logo";
+import { LogoWordmark } from "./Logo";
 import { SpecularButton } from "@/components/SpecularButton";
 
 const links = [
@@ -58,8 +58,7 @@ export function Nav() {
       <div className="wrap">
         <div className="nav__bar">
           <Link href="/" className="nav__brand" aria-label="Stack Studio home">
-            <LogoMark />
-            Stack Studio
+            <LogoWordmark height={20} />
           </Link>
           <nav className="nav__links" aria-label="Primary" onPointerLeave={onLinksLeave}>
             <span ref={hoverRef} className="nav__hover" aria-hidden="true" />

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { services, serviceHref } from "@/lib/content";
+import { LogoFull } from "./Logo";
 import { SpecularButton } from "./SpecularButton";
 
 export function Footer() {
@@ -25,6 +26,11 @@ export function Footer() {
             </SpecularButton>
           </div>
         )}
+        <div className="footer__brand">
+          <Link href="/" aria-label="Stack Studio home">
+            <LogoFull width={200} />
+          </Link>
+        </div>
         <div className="footer__row">
           <div>© {new Date().getFullYear()} Stack Studio. Centurion, South Africa.</div>
           <nav className="footer__links" aria-label="Footer">

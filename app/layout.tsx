@@ -4,6 +4,7 @@ import { ClickSpark } from "@/components/ClickSpark";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { RevealObserver } from "@/components/RevealObserver";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import "./globals.css";
 
 const sans = Archivo({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-sans", display: "swap" });
@@ -34,7 +35,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
+    // data-scroll-behavior: Next 16 opt-in to suspend our smooth scrolling during route changes,
+    // so page navigations jump instead of animating.
+    <html lang="en" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth">
       <body>
         <a href="#main" className="skip-link">
           Skip to content
@@ -45,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
         </ClickSpark>
         <RevealObserver />
+        <ScrollToTop />
         <div className="grain" aria-hidden="true" />
       </body>
     </html>

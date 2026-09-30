@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type CSSProperties } from "react";
 import { services, type ServiceKey } from "@/lib/content";
+import { LogoMark } from "./Logo";
 
 /*
  * The "stack" in Stack Studio: one glass layer per service with the brand layer on top, in CSS 3D.
@@ -89,10 +90,7 @@ export function StackVisual({ active }: { active?: ServiceKey }) {
           </div>
         ))}
         <div className="plate plate--brand" style={{ "--z": layers.length } as CSSProperties}>
-          <svg viewBox="0 0 20 20" fill="none">
-            <path d="M10 2 L17 8 M10 2 L3 8" stroke="#160B04" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M10 9 L17 15 M10 9 L3 15" stroke="#FFF4EC" strokeWidth="2.2" strokeLinecap="round" />
-          </svg>
+          <LogoMark />
         </div>
       </div>
     </div>

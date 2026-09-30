@@ -271,6 +271,9 @@ img, svg { display: block; }
 }
 .footer__cta h2 { position: relative; max-width: 14ch; }
 .footer__cta .btn { position: relative; }
+.footer__brand { padding: 56px 4px 0; }
+.footer__brand a { display: inline-block; transition: opacity 200ms ease; }
+@media (hover: hover) and (pointer: fine) { .footer__brand a:hover { opacity: 0.85; } }
 .footer__row {
   display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;
   padding: 28px 4px 0; font-size: 14px; color: var(--text-3);
@@ -363,8 +366,9 @@ img, svg { display: block; }
   border-color: rgba(255, 255, 255, 0.3);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 50px 80px -30px var(--accent-glow);
 }
-.plate--brand svg { position: absolute; left: 50%; top: 50%; width: 34%; height: 34%; transform: translate(-50%, -50%) rotate(42deg); }
+.plate--brand svg { position: absolute; left: 50%; top: 50%; width: 38%; height: 38%; transform: translate(-50%, -50%) rotate(42deg); color: var(--accent-ink); }
 .stack[data-muted="true"] .plate--brand { background: var(--surface-3); border-color: var(--line-2); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+.stack[data-muted="true"] .plate--brand svg { color: var(--accent); }
 @keyframes plate-in { from { opacity: 0; transform: translateZ(0); } }
 
 @media (max-width: 900px) { .stack { max-width: 380px; } }
