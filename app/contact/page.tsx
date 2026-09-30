@@ -3,6 +3,7 @@ import type { CSSProperties } from "react";
 import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
 import { TechHeading } from "@/components/TechHeading";
+import { PageTransition } from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -13,7 +14,7 @@ const i = (n: number) => ({ "--i": n }) as CSSProperties;
 
 export default function ContactPage() {
   return (
-    <>
+    <PageTransition>
       <section className="wrap hero hero--inner hero--text">
         <div className="hero__glow" aria-hidden="true" />
         <div className="hero__copy load-in">
@@ -36,6 +37,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 }

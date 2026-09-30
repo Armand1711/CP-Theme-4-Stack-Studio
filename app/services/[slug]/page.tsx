@@ -16,6 +16,7 @@ import { ResponsiveDemo } from "@/components/demos/ResponsiveDemo";
 import { SheetDemo } from "@/components/demos/SheetDemo";
 import type { ServiceKey } from "@/lib/content";
 import { SplitHeading } from "@/components/SplitHeading";
+import { PageTransition } from "@/components/PageTransition";
 
 const DEMOS: Record<ServiceKey, () => React.ReactNode> = {
   web: () => <ResponsiveDemo />,
@@ -44,7 +45,7 @@ export default async function ServicePage({ params }: Props) {
   if (!service) notFound();
 
   return (
-    <>
+    <PageTransition>
       <section className="wrap hero hero--inner" data-service={service.key}>
         <div className="hero__glow" aria-hidden="true" />
         <div className="hero__copy load-in">
@@ -95,7 +96,7 @@ export default async function ServicePage({ params }: Props) {
       </section>
 
       <section className="wrap section" style={{ paddingTop: 0 }}>
-        <div className="proof surface" data-reveal>
+        <div className="proof" data-reveal>
           {service.caseStudy ? (
             <CaseStudy study={service.caseStudy} kicker="Proof point" />
           ) : (
@@ -120,6 +121,6 @@ export default async function ServicePage({ params }: Props) {
           </Link>
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 }

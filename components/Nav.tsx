@@ -54,7 +54,8 @@ export function Nav() {
   ));
 
   return (
-    <header className="nav">
+    // Named so page transitions leave the header in place as a fixed reference point.
+    <header className="nav" style={{ viewTransitionName: "site-header" }}>
       <div className="wrap">
         <div className="nav__bar">
           <Link href="/" className="nav__brand" aria-label="Stack Studio home">
@@ -63,7 +64,7 @@ export function Nav() {
           <nav className="nav__links" aria-label="Primary" onPointerLeave={onLinksLeave}>
             <span ref={hoverRef} className="nav__hover" aria-hidden="true" />
             {items}
-            <SpecularButton href="/contact" autoAnimate className="btn btn--primary btn--sm">
+            <SpecularButton href="/contact" className="btn btn--primary btn--sm">
               Start a Project
               <ArrowUpRight size={16} weight="bold" aria-hidden />
             </SpecularButton>
@@ -82,7 +83,7 @@ export function Nav() {
           <div>
             <nav aria-label="Primary (mobile)">
               {items}
-              <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
+              <SpecularButton href="/contact" className="btn btn--primary">
                 Start a Project
                 <ArrowUpRight size={16} weight="bold" aria-hidden />
               </SpecularButton>

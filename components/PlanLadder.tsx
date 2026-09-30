@@ -14,7 +14,7 @@ export function PlanLadder({ detailed = false }: { detailed?: boolean }) {
         return (
           <article
             key={p.id}
-            className={`tier tier--${p.id} surface spot`}
+            className={`tier tier--${p.id}`}
             data-reveal
             style={{ "--d": i } as CSSProperties}
           >

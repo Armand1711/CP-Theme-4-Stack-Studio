@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Archivo, Geist_Mono } from "next/font/google";
-import { ClickSpark } from "@/components/ClickSpark";
 import { DotField } from "@/components/DotField";
 import { Footer } from "@/components/Footer";
 import { Nav } from "@/components/Nav";
 import { RevealObserver } from "@/components/RevealObserver";
+import { RouteLoader } from "@/components/RouteLoader";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { TransitionOrigin } from "@/components/TransitionOrigin";
 import "./globals.css";
 
 const sans = Archivo({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-sans", display: "swap" });
@@ -44,13 +45,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a href="#main" className="skip-link">
           Skip to content
         </a>
-        <ClickSpark sparkColor="#F5F3EF" sparkSize={10} sparkRadius={18} sparkCount={8} duration={400}>
-          <Nav />
-          <main id="main">{children}</main>
-          <Footer />
-        </ClickSpark>
+        <Nav />
+        <main id="main">{children}</main>
+        <Footer />
         <RevealObserver />
         <ScrollToTop />
+        <TransitionOrigin />
+        <RouteLoader />
         <div className="grain" aria-hidden="true" />
       </body>
     </html>

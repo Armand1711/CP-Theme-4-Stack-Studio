@@ -3,9 +3,9 @@ import type { CSSProperties } from "react";
 import { faqs } from "@/lib/content";
 import { PlanFinder } from "@/components/PlanFinder";
 import { PlanLadder } from "@/components/PlanLadder";
-import { Spotlight } from "@/components/Spotlight";
 import { TechHeading } from "@/components/TechHeading";
 import { SplitHeading } from "@/components/SplitHeading";
+import { PageTransition } from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   title: "Pricing",
@@ -16,7 +16,7 @@ const i = (n: number) => ({ "--i": n }) as CSSProperties;
 
 export default function PricingPage() {
   return (
-    <>
+    <PageTransition>
       <section className="wrap hero hero--inner hero--text">
         <div className="hero__glow" aria-hidden="true" />
         <div className="hero__copy load-in">
@@ -31,9 +31,7 @@ export default function PricingPage() {
 
       <section className="wrap">
         <PlanFinder>
-          <Spotlight>
-            <PlanLadder detailed />
-          </Spotlight>
+          <PlanLadder detailed />
         </PlanFinder>
       </section>
 
@@ -50,6 +48,6 @@ export default function PricingPage() {
           ))}
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 }

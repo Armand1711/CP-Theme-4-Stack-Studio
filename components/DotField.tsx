@@ -4,10 +4,11 @@ import { useEffect, useRef } from "react";
 
 /*
  * Site-wide interactive background: a fixed grid of faint dots.
- * - A slow diagonal wave of light drifts across the grid (ambient motion).
  * - Dots near the pointer brighten toward the accent and part around it (feedback).
  * - A click sends a ring of light outward from the click point.
- * Pauses when the tab is hidden (rAF), draws one static frame under reduced motion.
+ * - `burstDots(x, y)` sends a bigger, slower ring for rare moments (a sent form).
+ * The grid is still when nothing is happening: the rAF loop only runs while the pointer glow is
+ * easing or a ring is alive, then draws one final frame and sleeps. Reduced motion: static grid.
  */
 
 const GAP = 28;
@@ -15,6 +16,14 @@ const REACH = 150;
 const PUSH = 9;
 const ACCENT: [number, number, number] = [243, 108, 33];
 const BASE: [number, number, number] = [245, 243, 239];
+const BURST_EVENT = "dotfield:burst";
+
+type Ring = { x: number; y: number; t: number; speed: number; life: number; width: number };
+
+/** Celebrate at a point on screen (client coordinates). No-op under reduced motion. */
+export function burstDots(x: number, y: number) {
+  window.dispatchEvent(new CustomEvent(BURST_EVENT, { detail: { x, y } }));
+}
 
 export function DotField() {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -30,8 +39,9 @@ export function DotField() {
     let h = 0;
     let dpr = 1;
     let raf = 0;
+    let last = 0;
     const pointer = { x: -9999, y: -9999, tx: -9999, ty: -9999, on: 0, target: 0 };
-    const rings: { x: number; y: number; t: number }[] = [];
+    const rings: Ring[] = [];
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -39,27 +49,18 @@ export function DotField() {
       h = window.innerHeight;
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
-      if (reduce) draw(0);
+      draw(performance.now() / 1000);
     };
 
-    const draw = (now: number) => {
+    const draw = (t: number) => {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, w, h);
-      const t = now / 1000;
-      // Pointer eases toward its target so the lit area glides rather than snaps.
-      pointer.x += (pointer.tx - pointer.x) * 0.18;
-      pointer.y += (pointer.ty - pointer.y) * 0.18;
-      pointer.on += (pointer.target - pointer.on) * 0.08;
-
-      for (let i = rings.length - 1; i >= 0; i--) if (t - rings[i].t > 1.4) rings.splice(i, 1);
 
       const offX = (w % GAP) / 2;
       const offY = (h % GAP) / 2;
       for (let y = offY; y < h; y += GAP) {
         for (let x = offX; x < w; x += GAP) {
-          // Ambient wave: a soft diagonal band that drifts across the page.
-          const wave = reduce ? 0 : Math.max(0, Math.sin(x * 0.006 + y * 0.004 - t * 0.6)) ** 6;
-          let a = 0.07 + wave * 0.12;
+          let a = 0.08;
           let mix = 0;
           let dx = 0;
           let dy = 0;
@@ -78,9 +79,8 @@ export function DotField() {
           }
           for (const r of rings) {
             const age = t - r.t;
-            const radius = age * 520;
             const d = Math.hypot(x - r.x, y - r.y);
-            const band = Math.max(0, 1 - Math.abs(d - radius) / 46) * (1 - age / 1.4);
+            const band = Math.max(0, 1 - Math.abs(d - age * r.speed) / r.width) * (1 - age / r.life);
             if (band > 0) {
               a += band * 0.8;
               mix = Math.max(mix, band);
@@ -98,7 +98,27 @@ export function DotField() {
     };
 
     const loop = (now: number) => {
-      draw(now);
+      const dt = Math.min((now - last) / 1000, 0.05);
+      last = now;
+      const t = now / 1000;
+      // Frame-rate independent easing: the lit area glides the same on 60Hz and 120Hz screens.
+      const kPos = 1 - Math.exp(-dt * 12);
+      const kOn = 1 - Math.exp(-dt * 5);
+      pointer.x += (pointer.tx - pointer.x) * kPos;
+      pointer.y += (pointer.ty - pointer.y) * kPos;
+      pointer.on += (pointer.target - pointer.on) * kOn;
+      for (let i = rings.length - 1; i >= 0; i--) if (t - rings[i].t > rings[i].life) rings.splice(i, 1);
+
+      draw(t);
+
+      const easing =
+        Math.abs(pointer.target - pointer.on) > 0.005 ||
+        (pointer.on > 0.01 && Math.hypot(pointer.tx - pointer.x, pointer.ty - pointer.y) > 0.3);
+      raf = easing || rings.length ? requestAnimationFrame(loop) : 0;
+    };
+    const wake = () => {
+      if (raf || reduce) return;
+      last = performance.now();
       raf = requestAnimationFrame(loop);
     };
 
@@ -111,9 +131,23 @@ export function DotField() {
       pointer.tx = e.clientX;
       pointer.ty = e.clientY;
       pointer.target = 1;
+      wake();
     };
-    const onLeave = () => (pointer.target = 0);
-    const onDown = (e: PointerEvent) => rings.push({ x: e.clientX, y: e.clientY, t: performance.now() / 1000 });
+    const onLeave = () => {
+      pointer.target = 0;
+      wake();
+    };
+    const addRing = (x: number, y: number, big: boolean) => {
+      rings.push({ x, y, t: performance.now() / 1000, speed: big ? 700 : 520, life: big ? 2 : 1.4, width: big ? 90 : 46 });
+      wake();
+    };
+    const onDown = (e: PointerEvent) => addRing(e.clientX, e.clientY, false);
+    const onBurst = (e: Event) => {
+      const { x, y } = (e as CustomEvent<{ x: number; y: number }>).detail;
+      addRing(x, y, true);
+      // A second, trailing wave reads as a celebration rather than a click.
+      setTimeout(() => addRing(x, y, true), 180);
+    };
 
     resize();
     window.addEventListener("resize", resize);
@@ -123,7 +157,7 @@ export function DotField() {
         document.documentElement.addEventListener("pointerleave", onLeave);
       }
       window.addEventListener("pointerdown", onDown, { passive: true });
-      raf = requestAnimationFrame(loop);
+      window.addEventListener(BURST_EVENT, onBurst);
     }
     return () => {
       cancelAnimationFrame(raf);
@@ -131,6 +165,7 @@ export function DotField() {
       window.removeEventListener("pointermove", onMove);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener(BURST_EVENT, onBurst);
     };
   }, []);
 

@@ -5,6 +5,7 @@ import { ArrowUpRight, Check } from "@phosphor-icons/react";
 import { contactInterests } from "@/lib/content";
 import { validateContact, type ContactInterest } from "@/lib/contact";
 import { SpecularButton } from "@/components/SpecularButton";
+import { burstDots } from "@/components/DotField";
 
 type Status = { kind: "idle" } | { kind: "sending" } | { kind: "sent" } | { kind: "error"; message: string };
 
@@ -35,6 +36,14 @@ export function ContactForm({ variant = "full" }: { variant?: "full" | "compact"
     setErrors(found);
     if (Object.keys(found).length) {
       setStatus({ kind: "idle" });
+      // A short head-shake on each invalid field; replays on every failed attempt.
+      for (const name of Object.keys(found)) {
+        const field = form.querySelector(`[name="${name}"]`)?.closest<HTMLElement>(".field");
+        if (!field) continue;
+        field.classList.remove("is-shaking");
+        void field.offsetWidth;
+        field.classList.add("is-shaking");
+      }
       form.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
       return;
     }
@@ -52,6 +61,9 @@ export function ContactForm({ variant = "full" }: { variant?: "full" | "compact"
         setStatus({ kind: "error", message: json.error ?? "Something went wrong. Please try again." });
         return;
       }
+      // Rare, earned moment: the background sends a wave out from the Send button.
+      const r = form.querySelector('button[type="submit"]')?.getBoundingClientRect();
+      if (r) burstDots(r.left + r.width / 2, r.top + r.height / 2);
       form.reset();
       setInterest(null);
       setStatus({ kind: "sent" });
@@ -62,7 +74,7 @@ export function ContactForm({ variant = "full" }: { variant?: "full" | "compact"
 
   if (status.kind === "sent") {
     return (
-      <div className="contact__form surface" aria-live="polite">
+      <div className="contact__form" aria-live="polite">
         <div className="form-sent">
           <span className="form-sent__icon">
             <Check size={24} weight="bold" aria-hidden />
@@ -99,7 +111,7 @@ export function ContactForm({ variant = "full" }: { variant?: "full" | "compact"
   );
 
   return (
-    <form className="contact__form surface" onSubmit={onSubmit} noValidate>
+    <form className="contact__form" onSubmit={onSubmit} noValidate>
       {full && (
         <fieldset className="field">
           <legend>What are you interested in?</legend>
@@ -144,7 +156,7 @@ export function ContactForm({ variant = "full" }: { variant?: "full" | "compact"
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-        <SpecularButton type="submit" autoAnimate className="btn btn--primary" disabled={status.kind === "sending"}>
+        <SpecularButton type="submit" className="btn btn--primary" disabled={status.kind === "sending"}>
           {status.kind === "sending" ? "Sending…" : "Send"}
           {status.kind !== "sending" && <ArrowUpRight size={18} weight="bold" aria-hidden />}
         </SpecularButton>

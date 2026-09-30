@@ -20,8 +20,16 @@ export function CaseStudyExplorer() {
       const tab = listRef.current?.querySelector<HTMLElement>(`[data-key="${active}"]`);
       const ind = indicatorRef.current;
       if (!tab || !ind) return;
+      // First placement is instant (no slide in from zero width); later moves animate.
+      const first = !ind.dataset.placed;
+      if (first) ind.style.transition = "none";
       ind.style.width = `${tab.offsetWidth}px`;
       ind.style.transform = `translateX(${tab.offsetLeft}px)`;
+      if (first) {
+        void ind.offsetWidth;
+        ind.style.transition = "";
+        ind.dataset.placed = "true";
+      }
     };
     place();
     const ro = new ResizeObserver(place);
@@ -58,27 +66,30 @@ export function CaseStudyExplorer() {
         ))}
       </div>
 
-      <div
-        key={active}
-        role="tabpanel"
-        id={`${baseId}-panel`}
-        aria-labelledby={`${baseId}-tab-${active}`}
-        className="explorer__panel"
-      >
-        {current.caseStudy ? (
-          <CaseStudy study={current.caseStudy} kicker={`${current.name} case study`} href={serviceHref(current)} />
-        ) : (
-          <div className="coming-soon">
-            <h3>Case study coming soon</h3>
-            <p className="body-2">
-              We&apos;re writing up a {current.name} project. In the meantime, see what the service covers.
-            </p>
-            <Link href={serviceHref(current)} className="textlink textlink--accent">
-              Explore {current.name}
-              <ArrowRight size={16} weight="bold" aria-hidden />
-            </Link>
-          </div>
-        )}
+      {/* The panel is the top card of a deck; the other services sit underneath. */}
+      <div className="deck">
+        <div
+          key={active}
+          role="tabpanel"
+          id={`${baseId}-panel`}
+          aria-labelledby={`${baseId}-tab-${active}`}
+          className="explorer__panel deck__top"
+        >
+          {current.caseStudy ? (
+            <CaseStudy study={current.caseStudy} kicker={`${current.name} case study`} href={serviceHref(current)} />
+          ) : (
+            <div className="coming-soon">
+              <h3>Case study coming soon</h3>
+              <p className="body-2">
+                We&apos;re writing up a {current.name} project. In the meantime, see what the service covers.
+              </p>
+              <Link href={serviceHref(current)} className="textlink textlink--accent">
+                Explore {current.name}
+                <ArrowRight size={16} weight="bold" aria-hidden />
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

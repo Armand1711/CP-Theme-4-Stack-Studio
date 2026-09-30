@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { services, serviceHref } from "@/lib/content";
+import { CircleCta } from "./CircleCta";
 import { LogoFull } from "./Logo";
-import { SpecularButton } from "./SpecularButton";
 import { SplitHeading } from "@/components/SplitHeading";
 
 export function Footer() {
@@ -17,14 +16,11 @@ export function Footer() {
     <footer className="footer">
       <div className="wrap">
         {showCta && (
-          <div className="footer__cta surface" data-reveal>
-            <SplitHeading className="display display--h2">
+          <div className="footer__cta">
+            <SplitHeading className="display footer__cta-title">
               Have something <em>to build?</em>
             </SplitHeading>
-            <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
-              Start a Project
-              <ArrowUpRight size={18} weight="bold" aria-hidden />
-            </SpecularButton>
+            <CircleCta />
           </div>
         )}
         <div className="footer__brand">
