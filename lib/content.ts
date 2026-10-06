@@ -20,9 +20,14 @@ export type Service = {
   /** H1 is rendered as `titleLead <em>titleEm</em>`. */
   titleLead: string;
   titleEm: string;
+  /** One line on what the client walks away with. Used in the home list and the service hero. */
   lede: string;
-  /** Shorter line used in the home page's service list. */
-  summary: string;
+  /** Starting price of a one-off project in this service, shown as "From {fromPrice}". */
+  fromPrice: string;
+  /** Typical length of a one-off project. */
+  timeline: string;
+  /** What a typical one-off project covers: three short lines. */
+  projectIncludes: string[];
   included: IncludedItem[];
   caseStudy: CaseStudy | null;
   /** Heading + intro for the page's interactive signature section. Heading renders as `lead <em>em</em>`. */
@@ -45,8 +50,10 @@ export const services: Service[] = [
     navLabel: "Web Dev",
     titleLead: "Web",
     titleEm: "Development",
-    lede: "Marketing sites and web apps built for conversion and speed.",
-    summary: "Marketing sites and web apps built for conversion and speed.",
+    lede: "Websites and web apps that load fast and bring in leads.",
+    fromPrice: "[R__]",
+    timeline: "[_ to _ weeks]",
+    projectIncludes: ["Custom design for your brand", "Works on phone, tablet and desktop", "Launch and handover"],
     included: [
       { id: "marketing", title: "Marketing & brochure sites", body: "Fast, conversion-focused sites for outreach and brand presence." },
       { id: "webapps", title: "Web applications", body: "Custom web apps with real functionality, not just static pages." },
@@ -54,7 +61,7 @@ export const services: Service[] = [
       { id: "perf-seo", title: "Performance & SEO", body: "Sites that load fast and rank, not just look good." },
     ],
     caseStudy: gcSolar,
-    demo: { lead: "Built to fit", em: "every screen.", lede: "Drag the handle. Watch it reflow." },
+    demo: { lead: "Built to fit", em: "every screen.", lede: "Pick a device, or drag the handle to resize." },
   },
   {
     key: "software",
@@ -64,8 +71,10 @@ export const services: Service[] = [
     navLabel: "Software",
     titleLead: "Software",
     titleEm: "Development",
-    lede: "Custom software and internal tools, built around how your team works.",
-    summary: "Custom business software and internal tools, built to fit how you work.",
+    lede: "Custom tools that cut the manual work out of your day.",
+    fromPrice: "[R__]",
+    timeline: "[_ to _ weeks]",
+    projectIncludes: ["A map of the workflow to fix", "One tool or integration, built", "Training and handover"],
     included: [
       { id: "tools", title: "Internal tools & dashboards", body: "Custom tools built around how your team already works." },
       { id: "apis", title: "APIs & integrations", body: "Connect your systems so data moves without manual work." },
@@ -73,7 +82,7 @@ export const services: Service[] = [
       { id: "automation", title: "Workflow automation", body: "Cut manual steps out of repetitive business processes." },
     ],
     caseStudy: null,
-    demo: { lead: "Watch the busywork", em: "disappear.", lede: "Press run. Drag the steps around." },
+    demo: { lead: "Watch the busywork", em: "disappear.", lede: "Press Run. Click a step to inspect its data." },
   },
   {
     key: "uiux",
@@ -83,27 +92,31 @@ export const services: Service[] = [
     navLabel: "UI/UX",
     titleLead: "UI/UX",
     titleEm: "Design",
-    lede: "Interfaces designed and tested before a single line of code ships.",
-    summary: "Interfaces designed and tested before a line of code ships.",
+    lede: "Screens you can click and test before anything gets built.",
+    fromPrice: "[R__]",
+    timeline: "[_ to _ weeks]",
+    projectIncludes: ["Research with real users", "A clickable prototype", "Design files ready to build"],
     included: [
       { id: "product", title: "Product design", body: "End-to-end design for web and mobile products." },
       { id: "systems", title: "Design systems", body: "Reusable components and tokens that keep every screen consistent." },
       { id: "research", title: "User research & testing", body: "Real user feedback before you commit to a direction." },
-      { id: "prototyping", title: "Prototyping", body: "Clickable prototypes to validate ideas before a line of code ships." },
+      { id: "prototyping", title: "Prototyping", body: "Clickable prototypes to test ideas early." },
     ],
     caseStudy: null,
-    demo: { lead: "From wireframe", em: "to finished.", lede: "Drag across. Before and after." },
+    demo: { lead: "From wireframe", em: "to finished.", lede: "Drag across to compare. Click a layer to inspect it." },
   },
   {
     key: "mobile",
     slug: "mobile-apps",
     number: "04",
     name: "Desktop & Mobile Apps",
-    navLabel: "Mobile",
+    navLabel: "Apps",
     titleLead: "Desktop &",
     titleEm: "Mobile Apps",
-    lede: "Cross-platform apps for the devices your team already uses.",
-    summary: "Cross-platform apps for the devices your team already uses.",
+    lede: "Apps for iOS, Android, Windows and macOS, from one team.",
+    fromPrice: "[R__]",
+    timeline: "[_ to _ weeks]",
+    projectIncludes: ["iOS and Android from one codebase", "App store submission", "Launch support"],
     included: [
       { id: "native", title: "iOS & Android apps", body: "Native-feeling apps built for both major platforms." },
       { id: "cross", title: "Cross-platform (React Native)", body: "One codebase, shipped to iOS and Android together." },
@@ -119,8 +132,6 @@ export const serviceHref = (s: Service) => `/services/${s.slug}`;
 
 export const getServiceBySlug = (slug: string) => services.find((s) => s.slug === slug);
 
-export const processSteps = ["Discover", "Design", "Build", "Launch"];
-
 export type PlanTier = {
   id: "starter" | "growth" | "team";
   name: string;
@@ -132,9 +143,9 @@ export type PlanTier = {
 export const plans: PlanTier[] = [
   {
     id: "starter",
-    name: "Starter / Project",
+    name: "Project",
     blurb: "A single fixed-scope project, quoted up front.",
-    price: "[From project quote]",
+    price: "Fixed quote",
     facts: [
       { label: "Ideal for", value: "a single site, app, or design job" },
       { label: "Engagement", value: "project-based, no ongoing commitment" },
@@ -181,6 +192,6 @@ export const contactInterests = [
   "Web Development",
   "Software Development",
   "UI/UX Design",
-  "Mobile Apps",
+  "Desktop & Mobile Apps",
   "Not sure yet",
 ] as const;

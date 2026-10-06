@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "@phosphor-icons/react/dist/ssr";
 import type { CaseStudy as CaseStudyData } from "@/lib/content";
+import { CaseMini } from "./Minis";
 
 export function CaseStudy({ study, kicker, href }: { study: CaseStudyData; kicker?: string; href?: string }) {
   return (
@@ -25,10 +26,9 @@ export function CaseStudy({ study, kicker, href }: { study: CaseStudyData; kicke
           </Link>
         )}
       </div>
-      {/* TODO: real GC Solar screenshot, 1600x1000. */}
-      <div className="image-slot">
-        <span>Case study image goes here</span>
-      </div>
+      {/* Illustrates the GC Solar build (site chat feeding Zoho CRM). A real screenshot (1600x1000) can sit
+          beside or replace it once available. */}
+      <CaseMini />
     </div>
   );
 }

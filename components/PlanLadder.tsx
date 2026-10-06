@@ -5,7 +5,7 @@ import { plans } from "@/lib/content";
 import { SpecularButton } from "@/components/SpecularButton";
 import { CountUp } from "./CountUp";
 
-/** Three-tier plan ladder. `detailed` adds the facts row (pricing page). */
+/** Three-tier plan ladder: name, one-line fit and price. `detailed` adds the facts row (pricing page). */
 export function PlanLadder({ detailed = false }: { detailed?: boolean }) {
   return (
     <div className="ladder">
@@ -31,7 +31,7 @@ export function PlanLadder({ detailed = false }: { detailed?: boolean }) {
                     {p.name}
                     {p.id === "team" && <span className="tier__badge">Full service</span>}
                   </h3>
-                  {detailed && <p className="body-2">{p.blurb}</p>}
+                  <p className="body-2">{p.blurb}</p>
                 </div>
               </div>
               <div className="tier__cta">

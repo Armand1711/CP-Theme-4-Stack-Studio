@@ -2,7 +2,9 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { Scramble } from "@/components/Scramble";
-import { ServiceList } from "@/components/ServiceList";
+import { ServicesBento } from "@/components/ServicesBento";
+import { ToolStack } from "@/components/ToolStack";
+import { HeroTicker } from "@/components/HeroTicker";
 import { BuildStory } from "@/components/BuildStory";
 import { ServiceMarquee } from "@/components/ServiceMarquee";
 import { CaseStudyExplorer } from "@/components/CaseStudyExplorer";
@@ -32,8 +34,8 @@ export default function HomePage() {
   return (
     <>
       <PageTransition>
-        {/* Hero: asymmetric split, copy left, the stack right */}
-        <section className="wrap hero">
+        {/* Hero: full-width headline; the stack rises into it from the bottom right */}
+        <section className="wrap hero hero--bold">
           <div className="hero__glow" aria-hidden="true" />
           <div className="hero__copy load-in">
             <p className="eyebrow" style={i(0)}>
@@ -59,20 +61,31 @@ export default function HomePage() {
                 </SpecularButton>
               </Magnetic>
             </div>
+            <HeroTicker style={i(4)} />
           </div>
           <StackVisual />
         </section>
 
         <ServiceMarquee />
 
-        {/* Services: giant type, no cards */}
+        {/* Services: a bento, each tile in its service's own tool */}
         <section id="services" className="wrap section">
           <div className="section-head" data-reveal>
             <SplitHeading className="display display--h2">
               Four disciplines. One team.
             </SplitHeading>
           </div>
-          <ServiceList />
+          <ServicesBento />
+        </section>
+
+        {/* The real service demos, stacked; pinned while you scroll through them */}
+        <section id="in-action" className="wrap section section--in-action" style={{ paddingTop: 0 }}>
+          <div className="section-head" data-reveal>
+            <SplitHeading className="display display--h2">
+              See it <em>in action.</em>
+            </SplitHeading>
+          </div>
+          <ToolStack />
         </section>
 
         {/* How it comes together: pinned stack that builds as you scroll */}

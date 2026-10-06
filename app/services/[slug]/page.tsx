@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
-import type { CSSProperties } from "react";
+import type { ComponentProps, CSSProperties } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeft, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { getServiceBySlug, services } from "@/lib/content";
 import { CaseStudy } from "@/components/CaseStudy";
-import { FlipGrid } from "@/components/FlipGrid";
-import { ProcessSteps } from "@/components/ProcessSteps";
+import { CiPipeline } from "@/components/CiPipeline";
+import { HeroFacts } from "@/components/HeroFacts";
+import { IncludedGrid } from "@/components/IncludedGrid";
+import { InstallSteps } from "@/components/InstallSteps";
+import { ServicePricing } from "@/components/ServicePricing";
+import { TerminalSteps } from "@/components/TerminalSteps";
 import { SpecularButton } from "@/components/SpecularButton";
+import { StickyBoard } from "@/components/StickyBoard";
 import { StackVisual } from "@/components/StackVisual";
 import { TechHeading } from "@/components/TechHeading";
 import { CompareDemo } from "@/components/demos/CompareDemo";
@@ -23,6 +28,21 @@ const DEMOS: Record<ServiceKey, () => React.ReactNode> = {
   software: () => <PipelineDemo />,
   uiux: () => <CompareDemo />,
   mobile: () => <SheetDemo />,
+};
+
+/*
+ * Each service page is dressed in its own tools: Web as browser DevTools and code, Software as backend
+ * tooling, UI/UX as a design tool, Apps as an app platform. `included` picks the "What's included"
+ * style and `process` the "How it runs" component.
+ */
+const THEMES: Record<
+  ServiceKey,
+  { included: Pick<ComponentProps<typeof IncludedGrid>, "variant" | "ext">; process: () => React.ReactNode }
+> = {
+  web: { included: { variant: "code", ext: "tsx" }, process: () => <TerminalSteps /> },
+  software: { included: { variant: "code", ext: "ts" }, process: () => <CiPipeline /> },
+  uiux: { included: { variant: "frames" }, process: () => <StickyBoard /> },
+  mobile: { included: { variant: "notifications" }, process: () => <InstallSteps /> },
 };
 
 type Props = { params: Promise<{ slug: string }> };
@@ -43,6 +63,7 @@ const i = (n: number) => ({ "--i": n }) as CSSProperties;
 export default async function ServicePage({ params }: Props) {
   const service = getServiceBySlug((await params).slug);
   if (!service) notFound();
+  const theme = THEMES[service.key];
 
   return (
     <PageTransition>
@@ -59,7 +80,8 @@ export default async function ServicePage({ params }: Props) {
           <p className="lede" style={i(2)}>
             {service.lede}
           </p>
-          <div className="hero__actions" style={i(3)}>
+          <HeroFacts service={service} style={i(3)} />
+          <div className="hero__actions" style={i(4)}>
             <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
               Start a Project
               <ArrowUpRight size={18} weight="bold" aria-hidden />
@@ -81,46 +103,37 @@ export default async function ServicePage({ params }: Props) {
         </div>
       </section>
 
-      <section className="wrap section" style={{ paddingTop: 0 }}>
+      <section className="wrap section code-grid" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
           <SplitHeading className="display display--h2">What&apos;s included</SplitHeading>
         </div>
-        <FlipGrid items={service.included} />
+        <IncludedGrid items={service.included} {...theme.included} />
+      </section>
+
+      <section id="cost" className="wrap section" style={{ paddingTop: 0 }}>
+        <div className="section-head" data-reveal>
+          <SplitHeading className="display display--h2">
+            What it <em>costs</em>
+          </SplitHeading>
+        </div>
+        <ServicePricing service={service} />
       </section>
 
       <section className="wrap section" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
           <SplitHeading className="display display--h2">How it runs</SplitHeading>
         </div>
-        <ProcessSteps />
+        {theme.process()}
       </section>
 
-      <section className="wrap section" style={{ paddingTop: 0 }}>
-        <div className="proof" data-reveal>
-          {service.caseStudy ? (
+      {/* Only services with a real case study get a proof section. */}
+      {service.caseStudy && (
+        <section className="wrap section" style={{ paddingTop: 0 }}>
+          <div className="proof" data-reveal>
             <CaseStudy study={service.caseStudy} kicker="Proof point" />
-          ) : (
-            <div className="proof__placeholder">
-              <p className="mono case__kicker" style={{ fontSize: 13 }}>
-                Proof point
-              </p>
-              <p className="body-2">[Case study placeholder. Add a {service.name} proof point]</p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="wrap" style={{ paddingBottom: "clamp(40px, 6vw, 80px)" }}>
-        <div className="cta-band" data-reveal>
-          <SplitHeading className="display display--h2" style={{ fontSize: "clamp(26px, 2.6vw, 36px)" }}>
-            Where this fits in a plan
-          </SplitHeading>
-          <Link href="/pricing" className="textlink textlink--accent">
-            See how {service.name} fits into a plan
-            <ArrowRight size={16} weight="bold" aria-hidden />
-          </Link>
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
     </PageTransition>
   );
 }
