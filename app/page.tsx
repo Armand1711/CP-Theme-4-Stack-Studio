@@ -42,7 +42,7 @@ export default function HomePage() {
               <Scramble text="Outsourced dev department for SMEs" />
             </p>
             <TechHeading className="display display--hero" style={i(1)}>
-              Your dev team, <em>without the hiring.</em>
+              A full dev team, <em>from day one.</em>
             </TechHeading>
             <p className="lede" style={i(2)}>
               Web, software, design and apps. One project, or your whole dev team.
