@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { CheckCircle, CircleDashed, CircleNotch, GitBranch } from "@phosphor-icons/react";
+import { CheckCircle, CircleDashed, CircleNotch, ListChecks } from "@phosphor-icons/react";
 
 /*
- * "How it runs" on the Software Development page, as a CI pipeline run. When it scrolls into view the
- * four stages go from queued to running to passed in order, and the connector between stages fills
- * as each one passes. Reduced motion shows the finished run.
+ * "How it runs" on the Web and Software Development pages, as a project progress tracker. When it
+ * scrolls into view the four stages go from up next to in progress to done, in order, and the bar along
+ * the top of each stage fills as it completes. Reduced motion shows the finished project.
  */
 
 const JOBS = [
@@ -20,8 +20,9 @@ const RUN_MS = 900;
 const GAP_MS = 180;
 
 type Status = "queued" | "running" | "passed";
+const STATUS_TEXT: Record<Status, string> = { queued: "Up next", running: "In progress", passed: "Done" };
 
-export function CiPipeline() {
+export function ProgressSteps() {
   const ref = useRef<HTMLDivElement>(null);
   /** How many jobs have passed, and whether the next one is running. */
   const [passed, setPassed] = useState(0);
@@ -70,12 +71,12 @@ export function CiPipeline() {
   return (
     <div ref={ref} className="ci" data-reveal>
       <div className="ci__bar">
-        <span className="ci__file mono">
-          <GitBranch size={14} weight="bold" aria-hidden />
-          your-project / delivery.yml
+        <span className="ci__file">
+          <ListChecks size={15} weight="bold" aria-hidden />
+          Your project
         </span>
-        <span className="ci__overall mono" data-status={overall} aria-hidden="true">
-          {overall}
+        <span className="ci__overall" data-status={overall} aria-hidden="true">
+          {overall === "passed" ? "Live" : STATUS_TEXT[overall]}
         </span>
       </div>
       <ol className="ci__jobs">
@@ -94,8 +95,8 @@ export function CiPipeline() {
               </span>
               <span className="ci__name">{j.name}</span>
               <span className="ci__line">{j.line}</span>
-              <span className="ci__state mono" aria-hidden="true">
-                {s}
+              <span className="ci__state" aria-hidden="true">
+                {STATUS_TEXT[s]}
               </span>
             </li>
           );

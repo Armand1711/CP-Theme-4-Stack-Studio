@@ -108,7 +108,7 @@ export function TechHeading({
   selection = true,
   labels = true,
   draggable = true,
-  sweep = true,
+  sweep = false,
   speed = 1,
 }: Props) {
   const hostRef = useRef<HTMLHeadingElement>(null);

@@ -3,10 +3,7 @@ import type { CSSProperties } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { Scramble } from "@/components/Scramble";
 import { ServicesBento } from "@/components/ServicesBento";
-import { ToolStack } from "@/components/ToolStack";
 import { HeroTicker } from "@/components/HeroTicker";
-import { BuildStory } from "@/components/BuildStory";
-import { ServiceMarquee } from "@/components/ServiceMarquee";
 import { CaseStudyExplorer } from "@/components/CaseStudyExplorer";
 import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
@@ -24,7 +21,6 @@ const i = (n: number) => ({ "--i": n }) as CSSProperties;
 // Bottom-up: the page builds the stack as you scroll; Contact caps it with the brand plate.
 const RAIL = [
   { id: "services", label: "Services" },
-  { id: "process", label: "Process" },
   { id: "work", label: "Work" },
   { id: "plans", label: "Plans" },
   { id: "contact", label: "Contact" },
@@ -49,7 +45,7 @@ export default function HomePage() {
             </p>
             <div className="hero__actions" style={i(3)}>
               <Magnetic>
-                <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
+                <SpecularButton href="/contact" className="btn btn--primary">
                   Start a Project
                   <ArrowUpRight size={18} weight="bold" aria-hidden />
                 </SpecularButton>
@@ -66,8 +62,6 @@ export default function HomePage() {
           <StackVisual />
         </section>
 
-        <ServiceMarquee />
-
         {/* Services: a bento, each tile in its service's own tool */}
         <section id="services" className="wrap section">
           <div className="section-head" data-reveal>
@@ -76,26 +70,6 @@ export default function HomePage() {
             </SplitHeading>
           </div>
           <ServicesBento />
-        </section>
-
-        {/* The real service demos, stacked; pinned while you scroll through them */}
-        <section id="in-action" className="wrap section section--in-action" style={{ paddingTop: 0 }}>
-          <div className="section-head" data-reveal>
-            <SplitHeading className="display display--h2">
-              See it <em>in action.</em>
-            </SplitHeading>
-          </div>
-          <ToolStack />
-        </section>
-
-        {/* How it comes together: pinned stack that builds as you scroll */}
-        <section id="process" className="wrap section" style={{ paddingTop: 0 }}>
-          <div className="section-head" data-reveal>
-            <SplitHeading className="display display--h2">
-              How it comes together.
-            </SplitHeading>
-          </div>
-          <BuildStory />
         </section>
 
         {/* Proof: one wide panel with a tabbed explorer */}

@@ -1,48 +1,65 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
-import { AddressBook, ArrowCounterClockwise, Browser, ChatCircleDots, FileText, Play } from "@phosphor-icons/react";
+import { AddressBook, ArrowCounterClockwise, Browser, ChatCircleDots, Check, FileText, Play } from "@phosphor-icons/react";
 import { SpecularButton } from "../SpecularButton";
-import { highlight } from "./highlight";
 
 /*
  * Software Development signature, styled like a workflow editor. Four steps of an automation sit on a
- * canvas (drag them anywhere; the wires re-route live). Clicking a step opens it in the inspector, which
- * shows the record that step passes on. Run sends a test enquiry through: a pulse travels each wire
- * (WAAPI on stroke-dashoffset), each step lights and hands its payload to the inspector, and the console
- * logs the API call it made. Everything is simulated example data.
+ * canvas (drag them anywhere; the wires re-route live). Clicking a step shows, in plain words, what that
+ * step does and the record it passes on. Run sends a test enquiry through: a pulse travels each wire
+ * (WAAPI on stroke-dashoffset), each step lights up, and the activity log notes what happened and how
+ * long it took. Written for business owners, not developers: no JSON or API paths on screen.
+ * Everything is simulated example data.
  */
 
 const NODES = [
   {
     id: "form", title: "Website enquiry", detail: "Form submitted", Icon: Browser,
-    req: { method: "POST", path: "/api/enquiries", status: 202, ms: 38 },
-    payload: {
-      name: "Thandi Mokoena",
-      company: "Northfield Solar",
-      email: "thandi@northfield.example",
-      message: "Quote for three rooftop sites",
-    },
+    does: "Picks up a new enquiry from your website form.",
+    done: "Enquiry received", ms: 38,
+    fields: [
+      ["Name", "Thandi Mokoena"],
+      ["Company", "Northfield Solar"],
+      ["Email", "thandi@northfield.example"],
+      ["Message", "Quote for three rooftop sites"],
+    ],
   },
   {
     id: "crm", title: "CRM", detail: "Contact created", Icon: AddressBook,
-    req: { method: "POST", path: "/crm/contacts", status: 201, ms: 84 },
-    payload: { id: "con_4821", name: "Thandi Mokoena", company: "Northfield Solar", source: "website", stage: "new lead" },
+    does: "Adds the person to your CRM as a new lead.",
+    done: "Contact created in CRM", ms: 84,
+    fields: [
+      ["Contact", "Thandi Mokoena"],
+      ["Company", "Northfield Solar"],
+      ["Source", "Website"],
+      ["Stage", "New lead"],
+    ],
   },
   {
     id: "quote", title: "Quote", detail: "Draft generated", Icon: FileText,
-    req: { method: "POST", path: "/quotes", status: 201, ms: 112 },
-    payload: { id: "Q-1047", contact: "con_4821", sites: 3, status: "draft", owner: null },
+    does: "Drafts a quote from the details they gave.",
+    done: "Quote drafted", ms: 112,
+    fields: [
+      ["Quote", "Q-1047"],
+      ["For", "Thandi Mokoena"],
+      ["Sites", "3"],
+      ["Status", "Draft, ready to review"],
+    ],
   },
   {
     id: "team", title: "Sales team", detail: "Notified on chat", Icon: ChatCircleDots,
-    req: { method: "POST", path: "/chat/messages", status: 200, ms: 61 },
-    payload: { channel: "#sales", text: "New lead: Thandi Mokoena (Northfield Solar). Quote Q-1047 drafted.", mention: "@on-call" },
+    does: "Tells your sales team, so someone follows up the same day.",
+    done: "Sales team notified", ms: 61,
+    fields: [
+      ["Sent to", "Sales team chat"],
+      ["Message", "New lead: Thandi Mokoena (Northfield Solar). Quote Q-1047 drafted."],
+    ],
   },
 ];
 
 type Offset = { x: number; y: number };
-type LogLine = { t: string; method?: string; path?: string; status?: number; ms?: number; text?: string };
+type LogLine = { text: string; ms?: number; final?: boolean };
 
 export function PipelineDemo() {
   const stageRef = useRef<HTMLDivElement>(null);
@@ -162,7 +179,6 @@ export function PipelineDemo() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
     const t0 = performance.now();
-    const stamp = () => `+${((performance.now() - t0) / 1000).toFixed(2)}s`;
     setRunning(true);
     setLog([]);
     setLit(-1);
@@ -170,8 +186,8 @@ export function PipelineDemo() {
       if (!alive.current) return;
       setLit(i);
       setSelected(i);
-      const { method, path, status, ms } = NODES[i].req;
-      setLog((l) => [...l, { t: stamp(), method, path, status, ms }]);
+      const { done, ms } = NODES[i];
+      setLog((l) => [...l, { text: done, ms }]);
       if (i === NODES.length - 1) break;
       const pulse = pulseRefs.current[i];
       if (reduce || !pulse) {
@@ -186,13 +202,12 @@ export function PipelineDemo() {
     }
     if (!alive.current) return;
     const total = ((performance.now() - t0) / 1000).toFixed(1);
-    setLog((l) => [...l, { t: stamp(), text: `Workflow finished in ${total}s. 0 manual steps.` }]);
+    setLog((l) => [...l, { text: `All done in ${total} seconds. Nobody copied anything by hand.`, final: true }]);
     setRunning(false);
   };
 
   const node = NODES[selected];
-  const json = JSON.stringify(node.payload, null, 2).split("\n");
-  // Before the first run (and for steps a run hasn't reached), the inspector shows sample data.
+  // Before the first run (and for steps a run hasn't reached), the details show example data.
   const live = log.length > 0 && selected <= lit;
 
   return (
@@ -203,7 +218,7 @@ export function PipelineDemo() {
           <i />
           <i />
         </span>
-        <span className="wf__file mono">workflows/new-enquiry.flow</span>
+        <span className="wf__file">New enquiry workflow</span>
         <div className="wf__actions">
           {moved && (
             <SpecularButton type="button" className="btn btn--ghost btn--sm" onClick={resetLayout}>
@@ -211,7 +226,7 @@ export function PipelineDemo() {
               Reset layout
             </SpecularButton>
           )}
-          <SpecularButton type="button" autoAnimate className="btn btn--primary btn--sm" onClick={run} disabled={running}>
+          <SpecularButton type="button" className="btn btn--primary btn--sm" onClick={run} disabled={running}>
             <Play size={14} weight="fill" aria-hidden />
             {running ? "Running…" : log.length ? "Run again" : "Run"}
           </SpecularButton>
@@ -262,45 +277,32 @@ export function PipelineDemo() {
           </div>
         </div>
 
-        <aside className="wf__inspector" aria-label="Inspector">
+        <aside className="wf__inspector" aria-label="Step details">
           <div className="wf__inspector-head">
             <span className="wf__inspector-title">{node.title}</span>
-            <span className="wf__badge mono" data-live={live || undefined}>
-              {live ? "output" : "sample"}
+            <span className="wf__badge" data-live={live || undefined}>
+              {live ? "Just ran" : "Example"}
             </span>
           </div>
-          <p className="wf__route mono">
-            <span className="wf__method">{node.req.method}</span> {node.req.path}
-          </p>
-          <pre key={`${selected}-${live}`} className="wf__json mono">
-            {json.map((line, i) => (
-              <span key={i} className="wf__json-line">
-                {highlight(line, "json")}
-              </span>
+          <p className="wf__route">{node.does}</p>
+          <dl key={`${selected}-${live}`} className="wf__fields">
+            {node.fields.map(([label, value]) => (
+              <div key={label}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
             ))}
-          </pre>
+          </dl>
         </aside>
       </div>
 
-      <ol className="wf__console mono" aria-live="polite" aria-label="Console">
-        {log.length === 0 && (
-          <li className="wf__console-empty">
-            <span>&gt;</span> Press Run to send a test enquiry through the workflow.
-          </li>
-        )}
+      <ol className="wf__console" aria-live="polite" aria-label="Activity">
+        {log.length === 0 && <li className="wf__console-empty">Press Run to send a test enquiry through the workflow.</li>}
         {log.map((l, i) => (
-          <li key={i} className={l.text ? "wf__console-done" : undefined}>
-            <span className="wf__t">{l.t}</span>
-            {l.text ? (
-              <span>{l.text}</span>
-            ) : (
-              <>
-                <span className="wf__method">{l.method}</span>
-                <span className="wf__path">{l.path}</span>
-                <span className="wf__status">{l.status}</span>
-                <span className="wf__ms">{l.ms}ms</span>
-              </>
-            )}
+          <li key={i} className={l.final ? "wf__console-done" : undefined}>
+            <Check size={14} weight="bold" aria-hidden />
+            <span>{l.text}</span>
+            {l.ms !== undefined && <span className="wf__ms">{(l.ms / 1000).toFixed(2)}s</span>}
           </li>
         ))}
       </ol>

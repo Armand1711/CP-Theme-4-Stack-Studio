@@ -108,7 +108,6 @@ export function PricingPlanner() {
             </ul>
             <SpecularButton
               href="/contact"
-              autoAnimate={p.id === planId}
               className={`btn ${p.id === planId ? "btn--primary" : "btn--ghost"}`}
             >
               Start a Project
@@ -199,7 +198,7 @@ export function PricingPlanner() {
                 ))}
               </ul>
             )}
-            <SpecularButton href="/contact" autoAnimate className="btn btn--primary btn--sm">
+            <SpecularButton href="/contact" className="btn btn--primary btn--sm">
               Start a Project
               <ArrowUpRight size={16} weight="bold" aria-hidden />
             </SpecularButton>

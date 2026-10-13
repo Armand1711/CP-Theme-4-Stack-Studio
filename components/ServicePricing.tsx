@@ -32,7 +32,7 @@ export function ServicePricing({ service }: { service: Service }) {
             </li>
           ))}
         </ul>
-        <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
+        <SpecularButton href="/contact" className="btn btn--primary">
           Start a Project
           <ArrowUpRight size={18} weight="bold" aria-hidden />
         </SpecularButton>

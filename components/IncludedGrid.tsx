@@ -15,19 +15,16 @@ const ICONS: Record<string, Icon> = {
 
 /**
  * "What's included": everything visible at once, one icon, title and line per item, dressed for the
- * service. `code` (Web and Software Development) shows each item as a file open in an editor tab.
+ * service. `tabs` (Web and Software Development) shows each item as a window with its name on a tab.
  * `frames` (UI/UX Design) shows each item as a named frame on a design canvas, selected on hover.
  * `notifications` (Apps) shows each item as a phone notification.
  */
 export function IncludedGrid({
   items,
   variant,
-  ext = "tsx",
 }: {
   items: IncludedItem[];
-  variant: "code" | "frames" | "notifications";
-  /** File extension shown on the editor tabs in the `code` variant. */
-  ext?: string;
+  variant: "tabs" | "frames" | "notifications";
 }) {
   if (variant === "notifications") {
     return (
@@ -89,22 +86,11 @@ export function IncludedGrid({
         const Glyph = ICONS[item.id] ?? SquaresFour;
         return (
           <li key={item.id} className="file" data-reveal style={{ "--d": i } as CSSProperties}>
-            <div className="file__tab mono" aria-hidden="true">
-              <Glyph size={14} weight="bold" />
-              {item.id}.{ext}
-            </div>
-            <div className="file__body">
-              <span className="file__ln mono" aria-hidden="true">
-                1<br />2
-              </span>
-              <div>
-                <h3 className="file__title">{item.title}</h3>
-                <p className="file__text mono">
-                  <span aria-hidden="true">{"// "}</span>
-                  {item.body}
-                </p>
-              </div>
-            </div>
+            <h3 className="file__tab">
+              <Glyph size={16} weight="bold" aria-hidden />
+              {item.title}
+            </h3>
+            <p className="file__text">{item.body}</p>
           </li>
         );
       })}

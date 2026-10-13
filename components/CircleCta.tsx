@@ -20,7 +20,7 @@ export function CircleCta() {
             </textPath>
           </text>
         </svg>
-        <SpecularButton href="/contact" autoAnimate className="circle-cta__btn" aria-label="Start a Project">
+        <SpecularButton href="/contact" className="circle-cta__btn" aria-label="Start a Project">
           <ArrowUpRight size={40} weight="bold" aria-hidden />
         </SpecularButton>
       </span>

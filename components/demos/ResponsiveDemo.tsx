@@ -2,15 +2,16 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import {
-  BatteryFull, BatteryCharging, CellSignalFull, ChartLineUp, Desktop, DeviceMobile, DeviceTablet, DotsSixVertical,
+  BatteryFull, BatteryCharging, CellSignalFull, ChartLineUp, Code, Desktop, DeviceMobile, DeviceTablet, DotsSixVertical,
   List, SolarPanel, WifiHigh,
 } from "@phosphor-icons/react";
 import { highlight, type Lang } from "./highlight";
 
 /*
  * Web Development signature, styled like a browser's responsive design mode: a toolbar (device, size,
- * zoom), a breakpoint ruler, the example site in a device frame, and a docked code panel whose lines
- * light up when they apply at the current width.
+ * zoom), a breakpoint ruler, the example site in a device frame, and (on request) a docked code panel
+ * whose lines light up when they apply at the current width. The code is hidden by default: most
+ * visitors are business owners, and the device frames tell the story without it.
  *
  * Picking a device, clicking the ruler or dragging the handle changes the screen width; the site inside
  * is laid out with container queries, so it genuinely reflows. The frame follows the width: a monitor
@@ -44,9 +45,9 @@ const SCREEN_H: Record<DeviceKind, number> = { desktop: 720, tablet: 800, phone:
 
 /** Ruler bands, widest first so narrower ones sit on top. `max` is the band's upper edge in screen px. */
 const BANDS: { id: DeviceKind; label: string; max: number | null }[] = [
-  { id: "desktop", label: "1024px +", max: null },
-  { id: "tablet", label: "600 to 1023px", max: 1023 },
-  { id: "phone", label: "up to 599px", max: 599 },
+  { id: "desktop", label: "Desktop", max: null },
+  { id: "tablet", label: "Tablet", max: 1023 },
+  { id: "phone", label: "Phone", max: 599 },
 ];
 
 /*
@@ -115,6 +116,7 @@ export function ResponsiveDemo() {
   const drag = useRef<{ x: number; visual: number; zoom: number; width: number } | null>(null);
   const kindRef = useRef<DeviceKind>("desktop");
   const [kind, setKind] = useState<DeviceKind>("desktop");
+  const [showCode, setShowCode] = useState(false);
 
   /** Width available to the frame inside the stage, in page pixels. */
   const avail = () => Math.max(200, (stageRef.current?.clientWidth ?? 1200) - GUTTER * 2);
@@ -352,13 +354,26 @@ export function ResponsiveDemo() {
         </div>
       </div>
 
-      <div className="devtools__dock">
-        <CodePane file="index.html" lang="html" lines={HTML} kind={kind} />
-        <CodePane file="styles.css" lang="css" lines={CSS} kind={kind} />
+      <div className="rdemo__foot">
+        <p className="rdemo__caption">Example site. Pick a device, or drag the orange handle to resize it.</p>
+        <button
+          type="button"
+          className="rdemo__code-toggle"
+          aria-expanded={showCode}
+          aria-controls="rdemo-code"
+          onClick={() => setShowCode((v) => !v)}
+        >
+          <Code size={15} weight="bold" aria-hidden />
+          {showCode ? "Hide the code" : "Show the code"}
+        </button>
       </div>
-      <p className="rdemo__caption">
-        Example site. Lit lines are the code in use at this width. Drag the handle, click the ruler, or use the arrow keys.
-      </p>
+      {showCode && (
+        <div id="rdemo-code" className="devtools__dock">
+          <p className="devtools__dock-note">Highlighted lines are the ones the site is using at this screen size.</p>
+          <CodePane file="index.html" lang="html" lines={HTML} kind={kind} />
+          <CodePane file="styles.css" lang="css" lines={CSS} kind={kind} />
+        </div>
+      )}
     </div>
   );
 }

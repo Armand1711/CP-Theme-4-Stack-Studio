@@ -51,7 +51,7 @@ export function PlanLadder({ detailed = false }: { detailed?: boolean }) {
                   </SpecularButton>
                 )}
                 {p.id === "team" && (
-                  <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
+                  <SpecularButton href="/contact" className="btn btn--primary">
                     Start a Project
                     <ArrowUpRight size={18} weight="bold" aria-hidden />
                   </SpecularButton>

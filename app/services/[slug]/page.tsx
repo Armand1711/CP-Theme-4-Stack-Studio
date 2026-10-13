@@ -5,12 +5,11 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { getServiceBySlug, services } from "@/lib/content";
 import { CaseStudy } from "@/components/CaseStudy";
-import { CiPipeline } from "@/components/CiPipeline";
+import { ProgressSteps } from "@/components/ProgressSteps";
 import { HeroFacts } from "@/components/HeroFacts";
 import { IncludedGrid } from "@/components/IncludedGrid";
 import { InstallSteps } from "@/components/InstallSteps";
 import { ServicePricing } from "@/components/ServicePricing";
-import { TerminalSteps } from "@/components/TerminalSteps";
 import { SpecularButton } from "@/components/SpecularButton";
 import { StickyBoard } from "@/components/StickyBoard";
 import { StackVisual } from "@/components/StackVisual";
@@ -31,16 +30,16 @@ const DEMOS: Record<ServiceKey, () => React.ReactNode> = {
 };
 
 /*
- * Each service page is dressed in its own tools: Web as browser DevTools and code, Software as backend
- * tooling, UI/UX as a design tool, Apps as an app platform. `included` picks the "What's included"
+ * Each service page is dressed in its own tools, kept readable for non-technical visitors: Web as a
+ * device preview, Software as a workflow, UI/UX as a design tool, Apps as an app platform. `included` picks the "What's included"
  * style and `process` the "How it runs" component.
  */
 const THEMES: Record<
   ServiceKey,
-  { included: Pick<ComponentProps<typeof IncludedGrid>, "variant" | "ext">; process: () => React.ReactNode }
+  { included: Pick<ComponentProps<typeof IncludedGrid>, "variant">; process: () => React.ReactNode }
 > = {
-  web: { included: { variant: "code", ext: "tsx" }, process: () => <TerminalSteps /> },
-  software: { included: { variant: "code", ext: "ts" }, process: () => <CiPipeline /> },
+  web: { included: { variant: "tabs" }, process: () => <ProgressSteps /> },
+  software: { included: { variant: "tabs" }, process: () => <ProgressSteps /> },
   uiux: { included: { variant: "frames" }, process: () => <StickyBoard /> },
   mobile: { included: { variant: "notifications" }, process: () => <InstallSteps /> },
 };
@@ -82,7 +81,7 @@ export default async function ServicePage({ params }: Props) {
           </p>
           <HeroFacts service={service} style={i(3)} />
           <div className="hero__actions" style={i(4)}>
-            <SpecularButton href="/contact" autoAnimate className="btn btn--primary">
+            <SpecularButton href="/contact" className="btn btn--primary">
               Start a Project
               <ArrowUpRight size={18} weight="bold" aria-hidden />
             </SpecularButton>
