@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
-import { EnvelopeSimple } from "@phosphor-icons/react/dist/ssr";
+import Link from "next/link";
+import { DownloadSimple, EnvelopeSimple, IdentificationCard } from "@phosphor-icons/react/dist/ssr";
 import { PageTransition } from "@/components/PageTransition";
 import ProfileCard from "@/components/ProfileCard";
 import { SplitHeading } from "@/components/SplitHeading";
@@ -8,6 +9,7 @@ import { TeamQr } from "@/components/TeamQr";
 import { TechHeading } from "@/components/TechHeading";
 import { CrewMini } from "@/components/Minis";
 import { about, team } from "@/lib/content";
+import { cardHref, vcardHref } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
@@ -87,7 +89,21 @@ export default function AboutPage() {
                   <TeamQr slug={m.slug} name={m.firstName} size={128} />
                   <div className="member__qr-copy">
                     <div className="meta__label">Digital business card</div>
-                    <p className="body-2">Scan to save {m.firstName}&apos;s details straight to your phone.</p>
+                    <p className="body-2">
+                      <span className="member__hint--scan">Scan to save {m.firstName}&apos;s details straight to your phone.</span>
+                      <span className="member__hint--tap">Save {m.firstName}&apos;s details to your phone, or open the card.</span>
+                    </p>
+                    {/* Phones can't scan their own screen, so there the QR code gives way to direct buttons. */}
+                    <div className="member__save">
+                      <a href={vcardHref(m.slug)} className="btn btn--primary btn--sm">
+                        <DownloadSimple size={16} weight="bold" aria-hidden />
+                        Save contact
+                      </a>
+                      <Link href={cardHref(m.slug)} className="btn btn--ghost btn--sm">
+                        <IdentificationCard size={16} weight="bold" aria-hidden />
+                        View card
+                      </Link>
+                    </div>
                     <a href={`mailto:${m.email}`} className="textlink textlink--accent">
                       <EnvelopeSimple size={16} weight="bold" aria-hidden />
                       {m.email}

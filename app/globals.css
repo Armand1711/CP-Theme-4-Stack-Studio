@@ -58,7 +58,13 @@
    ========================================================================== */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-padding-top: calc(var(--nav-h) + 16px); scroll-behavior: smooth; }
+/* Vertical scrolling only, on every device. Overflow on <html> is applied to the viewport itself, which
+   is what iOS Safari pans sideways; it doesn't make <html> a scroll container, so sticky elements keep
+   working. Body clips as well (see below). Text size adjust stops iOS enlarging text in landscape. */
+html {
+  scroll-padding-top: calc(var(--nav-h) + 16px); scroll-behavior: smooth;
+  overflow-x: hidden; overscroll-behavior-x: none; -webkit-text-size-adjust: 100%; text-size-adjust: 100%;
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
@@ -72,6 +78,9 @@ body {
   text-rendering: optimizeLegibility;
   overflow-x: clip;
 }
+/* iOS 15 and older ignore `clip`; hidden still locks sideways scrolling there (sticky elements stop
+   sticking on those browsers, which is the lesser problem). */
+@supports not (overflow-x: clip) { body { overflow-x: hidden; } }
 
 a { color: inherit; text-decoration: none; }
 button, input, textarea { font: inherit; color: inherit; }
@@ -306,7 +315,10 @@ img, svg { display: block; }
   position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: center; gap: 48px;
   min-height: min(calc(100dvh - var(--nav-h)), 860px); padding-block: 48px 72px;
 }
-.hero__copy { display: grid; gap: 28px; justify-items: start; }
+/* minmax(0, 1fr): the column is the space available, so a wide child (the Apps store strip) scrolls inside
+   itself instead of stretching the column past the screen on small phones. */
+.hero__copy { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; justify-items: start; }
+.hero__copy > * { max-width: 100%; }
 .hero__actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
 .hero__glow {
   position: absolute; z-index: -1; pointer-events: none; inset: -10% -20% auto 35%; height: 90%;
@@ -448,6 +460,11 @@ img, svg { display: block; }
 @keyframes plate-in { from { opacity: 0; transform: translateZ(0); } }
 
 @media (max-width: 900px) { .stack { max-width: 380px; } }
+/* Small phones: a little smaller, so the rotated plates and their labels stay on screen. */
+@media (max-width: 480px) {
+  .stack, .hero--bold .stack { width: 86%; }
+  .plate__label { font-size: 11px; gap: 8px; }
+}
 
 /* ==========================================================================
    Home hero, bold layout: full-width headline, the stack rising into it from the bottom right
@@ -2188,7 +2205,7 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 12px; }
   max-width: 1080px; margin-inline: auto;
 }
 /* Each member is one panel; the bio flexes so both QR boxes line up along the bottom. */
-.member { display: grid; grid-template-rows: auto 1fr; gap: 28px; justify-items: center; padding: clamp(24px, 3vw, 40px); }
+.member { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto 1fr; gap: 28px; justify-items: center; padding: clamp(24px, 3vw, 40px); }
 .member__card { width: 100%; max-width: 360px; }
 .member__body { display: grid; grid-template-rows: 1fr auto; gap: 24px; width: 100%; max-width: 480px; }
 .member__bio { font-size: 19px; line-height: 1.6; color: var(--text-2); text-align: center; text-wrap: pretty; }
@@ -2197,6 +2214,18 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 12px; }
 .member__qr-copy .meta__label { margin-bottom: 0; color: var(--text); font-weight: 600; font-size: 16px; }
 .member__qr-copy .textlink { margin-top: 6px; max-width: 100%; overflow-wrap: anywhere; }
 .team-qr { flex: none; border-radius: var(--r-inner); }
+/* Phones and other touch screens get Save contact / View card buttons instead of relying on the QR code,
+   which can't be scanned from the same screen. Small phones drop the QR code altogether. */
+.member__save { display: none; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.member__hint--tap { display: none; }
+@media (max-width: 700px), (hover: none) and (pointer: coarse) {
+  .member__save { display: flex; }
+  .member__hint--scan { display: none; }
+  .member__hint--tap { display: inline; }
+}
+@media (max-width: 700px) {
+  .member__qr .team-qr { display: none; }
+}
 
 @media (max-width: 900px) {
   .about, .team { grid-template-columns: minmax(0, 1fr); }
