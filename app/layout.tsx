@@ -44,9 +44,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${sans.variable} ${mono.variable}`} data-scroll-behavior="smooth">
       <body>
         <DotField />
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
         <Nav />
         <main id="main">{children}</main>
         <Footer />

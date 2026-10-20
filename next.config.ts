@@ -26,6 +26,9 @@ export default function config(phase: string): NextConfig {
   // --url http://localhost:3000`), which iOS needs before it shares motion data with the page.
   const lan = lanAddress();
   return {
+    // The floating "N" dev badge reads as a stray button when testing pages (e.g. the business card) on a
+    // phone. Compile and runtime errors are still shown.
+    devIndicators: false,
     allowedDevOrigins: [...(lan ? [lan] : []), "*.trycloudflare.com"],
     // Point QR codes at the LAN address instead of localhost, which a phone can't reach.
     ...(!process.env.NEXT_PUBLIC_SITE_URL && lan && { env: { NEXT_PUBLIC_SITE_URL: `http://${lan}:${process.env.PORT || 3000}` } }),
