@@ -49,7 +49,9 @@ export default async function CardPage({ params }: Props) {
         />
 
         <div className="bizcard__actions">
-          <a href={vcardHref(member.slug)} download className="btn btn--primary bizcard__save">
+          {/* No `download` attribute: on iPhone it files the .vcf away in Downloads, while a plain link opens
+              the "Add to Contacts" card (with the photo). Android still downloads it via Content-Disposition. */}
+          <a href={vcardHref(member.slug)} className="btn btn--primary bizcard__save">
             <DownloadSimple size={18} weight="bold" aria-hidden />
             Save contact
           </a>

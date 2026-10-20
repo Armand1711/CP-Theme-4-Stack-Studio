@@ -37,7 +37,8 @@ for (const file of readdirSync("public/team").filter((f) => /^[a-z-]+\.webp$/.te
   const out = `public/team/${slug}-contact.jpg`;
   const info = await sharp(Buffer.from(backdrop))
     .composite([{ input: visible, left: (SIZE - PERSON_WIDTH) / 2, top: PERSON_TOP }])
-    .jpeg({ quality: 82, mozjpeg: true })
+    // Baseline (not progressive) JPEG: some Android contact importers and Outlook silently drop progressive photos.
+    .jpeg({ quality: 85, progressive: false, chromaSubsampling: "4:2:0" })
     .toFile(out);
   console.log(`${out}  ${Math.round(info.size / 1024)} KB`);
 }

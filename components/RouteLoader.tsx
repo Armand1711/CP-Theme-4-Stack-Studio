@@ -65,6 +65,8 @@ export function RouteLoader() {
       if (!a || !a.href || a.target === "_blank" || a.hasAttribute("download")) return;
       const url = new URL(a.href, location.href);
       if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      // Files (e.g. the .vcf contact card) open or download in place; there is no page to load.
+      if (/\.[a-z0-9]{2,5}$/i.test(url.pathname)) return;
       show();
     };
     // Back/forward: the URL has already changed when popstate fires.
