@@ -59,8 +59,7 @@ export function Nav() {
   if (isStandalonePage(pathname)) return null;
 
   return (
-    // Named so page transitions leave the header in place as a fixed reference point.
-    <header className="nav" style={{ viewTransitionName: "site-header" }}>
+    <header className="nav">
       <div className="wrap">
         <div className="nav__bar">
           <Link href="/" className="nav__brand" aria-label="Stack Studio home">

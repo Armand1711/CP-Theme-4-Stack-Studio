@@ -7,7 +7,6 @@ import { Nav } from "@/components/Nav";
 import { RevealObserver } from "@/components/RevealObserver";
 import { RouteLoader } from "@/components/RouteLoader";
 import { ScrollToTop } from "@/components/ScrollToTop";
-import { TransitionOrigin } from "@/components/TransitionOrigin";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -54,7 +53,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <RevealObserver />
         <HoverPlayback />
         <ScrollToTop />
-        <TransitionOrigin />
         <RouteLoader />
         <div className="grain" aria-hidden="true" />
       </body>

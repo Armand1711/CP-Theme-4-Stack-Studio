@@ -2062,19 +2062,6 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 12px; }
 }
 
 /* ==========================================================================
-   Page transitions (components/PageTransition.tsx)
-   New page grows as a circle from the click point; old page sinks back; header stays put.
-   ========================================================================== */
-::view-transition-group(site-header) { animation: none; }
-::view-transition-old(.page-out) { animation: page-out 320ms var(--ease-out) both; }
-::view-transition-new(.page-in) { animation: page-in 520ms var(--ease-in-out) both; }
-@keyframes page-out { to { opacity: 0; transform: scale(0.94); filter: blur(8px); } }
-@keyframes page-in {
-  from { clip-path: circle(0px at var(--vt-x, 50%) var(--vt-y, 0px)); }
-  to { clip-path: circle(var(--vt-r, 150vmax) at var(--vt-x, 50%) var(--vt-y, 0px)); }
-}
-
-/* ==========================================================================
    Hero stack play: grab to spin, tap to bounce (components/StackVisual.tsx)
    ========================================================================== */
 @property --bump { syntax: "<length>"; inherits: false; initial-value: 0px; }
@@ -2089,7 +2076,6 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 12px; }
 .stack.is-bouncing .plate { animation: plate-bump 820ms both; animation-delay: calc(var(--z) * 70ms); }
 
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
   .stack.is-bouncing .plate { animation: none; }
   .field.is-shaking, .form-sent > .form-sent__icon { animation: fade 200ms ease both; }
 }
@@ -2147,22 +2133,33 @@ fieldset.field { border: 0; margin: 0; padding: 0; gap: 12px; }
 
 /* ==========================================================================
    Route loading screen (components/RouteLoader.tsx, components/ElectricLogo.tsx)
-   Covers the whole screen on every page change. Its own view-transition name keeps it on top of the
-   page-in circle, so the new page is revealed when the loader fades, not underneath it.
+   Covers the whole screen on every page change, then fades away to reveal the new page. Every
+   animation here is opacity/transform only, so it runs on the compositor and stays smooth while the
+   new page (3D stack, WebGL, fonts) is still settling underneath.
    ========================================================================== */
 .electric-logo { position: relative; width: 100%; height: 100%; overflow: hidden; }
 .route-loader {
   position: fixed; inset: 0; z-index: var(--z-loader); display: grid; place-items: center;
-  background: var(--bg); view-transition-name: route-loader;
-  animation: loader-in 220ms var(--ease-out) both;
+  background: var(--bg); will-change: opacity;
 }
-.route-loader[data-phase="out"] { pointer-events: none; animation: loader-out 380ms var(--ease-out) both; }
+/* Built ahead of time and parked: invisible and inert. */
+.route-loader[data-phase="hidden"] { visibility: hidden; opacity: 0; pointer-events: none; }
+.route-loader[data-phase="in"] { animation: loader-in 220ms var(--ease-out) both; }
+.route-loader[data-phase="out"] { pointer-events: none; animation: loader-out 560ms var(--ease-out) both; }
 .route-loader__logo { width: min(440px, 80vw); height: min(440px, 80vw); }
+.route-loader[data-phase="out"] .route-loader__logo { animation: loader-logo-out 460ms var(--ease-out) both; }
 @keyframes loader-in { from { opacity: 0; } }
-@keyframes loader-out { to { opacity: 0; transform: scale(1.03); } }
-::view-transition-group(route-loader) { animation: none; }
+@keyframes loader-out { 0% { opacity: 1; } 25% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes loader-logo-out { to { opacity: 0; transform: scale(1.3); } }
+
+/* While the loader covers the page, hold the new page's entrance animations, including the hero
+   stack building up, so they play as the page is revealed instead of unseen underneath. */
+:root.route-loading .load-in > *,
+:root.route-loading .plate { animation-play-state: paused; }
+
 @media (prefers-reduced-motion: reduce) {
   .route-loader[data-phase="out"] { animation: loader-out-fade 300ms ease both; }
+  .route-loader[data-phase="out"] .route-loader__logo { animation: none; }
   @keyframes loader-out-fade { to { opacity: 0; } }
 }
 

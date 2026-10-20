@@ -78,7 +78,6 @@ export default function HomePage() {
             <SplitHeading className="display display--h2">
               See the work behind each service.
             </SplitHeading>
-            <p className="lede">Pick a service. See the proof.</p>
             <Link href="/work" className="textlink textlink--accent">
               View all work
               <ArrowRight size={16} weight="bold" aria-hidden />

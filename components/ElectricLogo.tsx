@@ -6,7 +6,9 @@ import { Mesh, Program, Renderer, Texture, Triangle } from "ogl";
 /*
  * React Bits' ElectricLogo, ported to TypeScript. Traces any image's outline into a signed distance
  * field and runs animated lightning along it in a WebGL2 shader (ogl). Styles live in globals.css
- * (.electric-logo). Behaviour is unchanged from the original.
+ * (.electric-logo). Additions to the original: `paused` stops drawing while it stays set up (so a
+ * hidden instance costs nothing and shows instantly), resuming replays the charge-up, and `charge`
+ * sets how long that charge-up takes.
  */
 
 const BOLT = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
@@ -57,6 +59,10 @@ export type ElectricLogoProps = {
   cursorRadius?: number;
   theme?: "dark" | "light";
   onRender?: (canvas: HTMLCanvasElement) => void;
+  /** Stop drawing (keeps the WebGL setup and traced shape). Unpausing replays the charge-up. */
+  paused?: boolean;
+  /** Seconds the logo takes to charge up to full strength. */
+  charge?: number;
   className?: string;
   style?: CSSProperties;
 };
@@ -646,12 +652,15 @@ export function ElectricLogo({
   cursorRadius = 100,
   theme = "dark",
   onRender,
+  paused = false,
+  charge = 1.4,
   className = "",
   style,
 }: ElectricLogoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const settingsRef = useRef<Settings | null>(null);
   const shapeRef = useRef<Shape | null>(null);
+  const resumeRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
     settingsRef.current = {
@@ -673,6 +682,8 @@ export function ElectricLogo({
       cursorRadius,
       theme,
       onRender,
+      paused,
+      charge,
     };
   });
 
@@ -868,7 +879,7 @@ export function ElectricLogo({
 
       const to = slots[target].shape;
       const from = morph < 1 ? slots[1 - target].shape : null;
-      if (to) progress = Math.min(1, progress + dt / 1.4);
+      if (to) progress = Math.min(1, progress + dt / Math.max(0.1, s?.charge ?? 1.4));
       const presence = progress * progress * (3 - 2 * progress);
 
       if (to && s) {
@@ -998,11 +1009,11 @@ export function ElectricLogo({
         s.onRender?.(canvas);
       }
 
-      if (visible) raf = requestAnimationFrame(frame);
+      if (visible && !settingsRef.current?.paused) raf = requestAnimationFrame(frame);
     };
 
     const start = () => {
-      if (raf || !visible) return;
+      if (raf || !visible || settingsRef.current?.paused) return;
       last = performance.now();
       raf = requestAnimationFrame(frame);
     };
@@ -1036,11 +1047,19 @@ export function ElectricLogo({
     });
     intersectionObserver.observe(container);
 
+    resumeRef.current = () => {
+      progress = 0;
+      sparks.length = 0;
+      pulses.length = 0;
+      start();
+    };
+
     resize();
     start();
 
     return () => {
       visible = false;
+      resumeRef.current = null;
       cancelAnimationFrame(raf);
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
@@ -1052,6 +1071,11 @@ export function ElectricLogo({
       if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
     };
   }, []);
+
+  // Unpausing replays the charge-up. Runs after the setup effect above, so resumeRef is set.
+  useEffect(() => {
+    if (!paused) resumeRef.current?.();
+  }, [paused]);
 
   return <div ref={containerRef} className={`electric-logo ${className}`.trim()} style={style} />;
 }
