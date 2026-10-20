@@ -12,7 +12,7 @@ export function NextSteps() {
   return (
     <ol className="next">
       {STEPS.map((s, i) => (
-        <li key={s.label} className="next__tile" data-reveal style={{ "--d": i } as CSSProperties}>
+        <li key={s.label} className="next__tile autoplay" data-reveal style={{ "--d": i } as CSSProperties}>
           {s.mini}
           <p className="next__label">
             <span className="mono">{String(i + 1).padStart(2, "0")}</span>

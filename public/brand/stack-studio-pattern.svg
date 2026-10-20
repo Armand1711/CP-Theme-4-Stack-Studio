@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="360" height="360" viewBox="0 0 360 360">
+  <defs>
+    <g id="m" transform="scale(0.2)">
+      <path d="M70.5488 172.773H110.863L90.9609 136.779L70.5488 172.773Z"/>
+      <path d="M90.5003 0V68.3894L38.5655 172.773H0L90.5003 0Z"/>
+      <path d="M90.4997 0V68.3894L142.435 172.773H181L90.4997 0Z"/>
+    </g>
+  </defs>
+  <g fill="#000">
+    <use xlink:href="#m" x="12" y="13"/><use xlink:href="#m" x="102" y="13"/><use xlink:href="#m" x="192" y="13"/><use xlink:href="#m" x="282" y="13"/>
+    <use xlink:href="#m" x="57" y="103"/><use xlink:href="#m" x="147" y="103"/><use xlink:href="#m" x="237" y="103"/><use xlink:href="#m" x="327" y="103"/><use xlink:href="#m" x="-33" y="103"/>
+    <use xlink:href="#m" x="12" y="193"/><use xlink:href="#m" x="102" y="193"/><use xlink:href="#m" x="192" y="193"/><use xlink:href="#m" x="282" y="193"/>
+    <use xlink:href="#m" x="57" y="283"/><use xlink:href="#m" x="147" y="283"/><use xlink:href="#m" x="237" y="283"/><use xlink:href="#m" x="327" y="283"/><use xlink:href="#m" x="-33" y="283"/>
+  </g>
+</svg>

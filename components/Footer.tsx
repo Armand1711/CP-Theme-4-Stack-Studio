@@ -3,14 +3,17 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { services, serviceHref } from "@/lib/content";
+import { isStandalonePage } from "@/lib/site";
 import { CircleCta } from "./CircleCta";
 import { LogoFull } from "./Logo";
 import { SplitHeading } from "@/components/SplitHeading";
 
 export function Footer() {
   const pathname = usePathname();
-  // Home and contact already end in the contact form.
-  const showCta = pathname !== "/contact" && pathname !== "/";
+  // Home and contact already end in the contact form; about and pricing end on their own content.
+  const showCta = !["/", "/contact", "/about", "/pricing"].includes(pathname);
+
+  if (isStandalonePage(pathname)) return null;
 
   return (
     <footer className="footer">
@@ -36,7 +39,9 @@ export function Footer() {
                 {s.navLabel}
               </Link>
             ))}
+            <Link href="/work">Work</Link>
             <Link href="/pricing">Pricing</Link>
+            <Link href="/about">About</Link>
             {/* TODO: point at real policy pages before launch. */}
             <Link href="#">Privacy</Link>
             <Link href="#">Terms</Link>

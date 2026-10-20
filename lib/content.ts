@@ -9,6 +9,18 @@ export type CaseStudy = {
   title: string;
   summary: string;
   tags: string[];
+  /** The live site, linked as "Visit live site". */
+  url?: string;
+  /** Screenshot under /public, 16:10 (1600x1000). */
+  image: { src: string; alt: string };
+  /** Shown on /work. */
+  client?: string;
+  year?: string;
+  /**
+   * Full-length screenshot of the site (1000px wide), scrolled through inside the browser frame on /work.
+   * `height` is its pixel height, which paces the scroll.
+   */
+  fullPage?: { src: string; height: number };
 };
 
 export type Service = {
@@ -29,16 +41,22 @@ export type Service = {
   /** What a typical one-off project covers: three short lines. */
   projectIncludes: string[];
   included: IncludedItem[];
-  caseStudy: CaseStudy | null;
+  /** Newest first. Services without any show a "coming soon" panel. */
+  caseStudies: CaseStudy[];
   /** Heading + intro for the page's interactive signature section. Heading renders as `lead <em>em</em>`. */
   demo: { lead: string; em: string; lede: string };
 };
 
-export const gcSolar: CaseStudy = {
-  title: "GC Solar: website redesign and CRM integration",
+export const mpgf: CaseStudy = {
+  title: "MPG Foundation: website for a Pretoria non-profit",
   summary:
-    "A full website rebuild for a solar energy company, with Zoho CRM wired directly into the site for lead capture and live chat.",
-  tags: ["Zoho CRM integration", "Live chat + lead capture", "Built on Next.js"],
+    "A full website for the Make Pretoria Great Foundation, a community non-profit restoring Pretoria's public spaces, with direct EFT donations, ways to volunteer or partner, and a live countdown for their charity event.",
+  tags: ["Donations by EFT", "Volunteer & partner sign-ups", "Live event countdown"],
+  url: "https://mpgf.org.za",
+  client: "MPG Foundation",
+  year: "2026",
+  fullPage: { src: "/work/mpgf-full.webp", height: 8567 },
+  image: { src: "/work/mpgf.webp", alt: "The MPG Foundation homepage: \"Make Pretoria Great.\"" },
 };
 
 export const services: Service[] = [
@@ -60,7 +78,7 @@ export const services: Service[] = [
       { id: "ecommerce", title: "E-commerce", body: "Storefronts with checkout, inventory and payment integration." },
       { id: "perf-seo", title: "Performance & SEO", body: "Sites that load fast and rank, not just look good." },
     ],
-    caseStudy: gcSolar,
+    caseStudies: [mpgf],
     demo: { lead: "Built to fit", em: "every screen.", lede: "Pick a device, or drag the handle to resize." },
   },
   {
@@ -81,7 +99,7 @@ export const services: Service[] = [
       { id: "legacy", title: "Legacy system modernization", body: "Rebuild aging systems without breaking what already works." },
       { id: "automation", title: "Workflow automation", body: "Cut manual steps out of repetitive business processes." },
     ],
-    caseStudy: null,
+    caseStudies: [],
     demo: { lead: "Watch the busywork", em: "disappear.", lede: "Press Run. Click a step to inspect its data." },
   },
   {
@@ -102,7 +120,7 @@ export const services: Service[] = [
       { id: "research", title: "User research & testing", body: "Real user feedback before you commit to a direction." },
       { id: "prototyping", title: "Prototyping", body: "Clickable prototypes to test ideas early." },
     ],
-    caseStudy: null,
+    caseStudies: [],
     demo: { lead: "From wireframe", em: "to finished.", lede: "Drag across to compare. Click a layer to inspect it." },
   },
   {
@@ -123,12 +141,15 @@ export const services: Service[] = [
       { id: "desktop", title: "Desktop applications", body: "Windows and macOS apps for internal or client-facing tools." },
       { id: "stores", title: "App store deployment & maintenance", body: "Submission, updates and ongoing support after launch." },
     ],
-    caseStudy: null,
+    caseStudies: [],
     demo: { lead: "Made to feel right", em: "in the hand.", lede: "Drag the sheet. Flick it." },
   },
 ];
 
 export const serviceHref = (s: Service) => `/services/${s.slug}`;
+
+/** Every case study with the service it belongs to, for the /work page. Follows service order, newest first within each. */
+export const allWork = services.flatMap((service) => service.caseStudies.map((study) => ({ study, service })));
 
 export const getServiceBySlug = (slug: string) => services.find((s) => s.slug === slug);
 
@@ -183,7 +204,7 @@ export const faqs = [
 ];
 
 export const contactDetails = {
-  email: "[contact@stackstudio.example]",
+  email: "stackstudio26@gmail.com",
   location: "Centurion, Gauteng, South Africa",
   socials: ["LinkedIn", "Instagram"],
 };
@@ -195,3 +216,65 @@ export const contactInterests = [
   "Desktop & Mobile Apps",
   "Not sure yet",
 ] as const;
+
+export type TeamMember = {
+  /** Used in the card URL (/card/{slug}) and the vCard filename. */
+  slug: string;
+  name: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  bio: string;
+  /** Shown on the profile card footer, without the @. */
+  handle: string;
+  /** Path under /public, e.g. "/team/armand.jpg". Null shows initials until a photo is added. */
+  photo: string | null;
+  email: string;
+  phone: string;
+  linkedin: string | null;
+};
+
+// After changing a photo in public/team/, run `npm run contact-photos` to rebuild the vCard contact photos.
+export const team: TeamMember[] = [
+  {
+    slug: "armand",
+    name: "Armand Naudé",
+    firstName: "Armand",
+    lastName: "Naudé",
+    role: "Co-founder · Software & Systems",
+    bio: "Armand runs the engineering behind our builds: back ends, integrations and the automation that takes busywork off our clients' plates.",
+    handle: "armand",
+    photo: "/team/armand.webp",
+    email: "armandn03@gmail.com",
+    phone: "063 046 2397",
+    linkedin: null,
+  },
+  {
+    slug: "enzo",
+    name: "Enzo De Vittorio",
+    firstName: "Enzo",
+    lastName: "De Vittorio",
+    role: "Co-founder · Design & Engineering",
+    bio: "Enzo leads design and front-end at Stack Studio, turning rough ideas into interfaces people enjoy using and seeing them through to fast, solid code.",
+    handle: "enzo",
+    photo: "/team/enzo.webp",
+    email: "enzo.devittorio03@gmail.com",
+    phone: "073 662 4471",
+    linkedin: null,
+  },
+];
+
+export const getTeamMember = (slug: string) => team.find((m) => m.slug === slug);
+
+export const about = {
+  lede: "Stack Studio is a design and development studio in Centurion. We build websites, software and apps for businesses that want a dev team without the hiring.",
+  story: [
+    "We started Stack Studio because good software shouldn't need a big agency or a full in-house team. Most businesses need a few sharp people who can design it, build it and keep it running.",
+    "So that's what we are: a small team that works across web, software, UI/UX and apps. You talk directly to the people doing the work, and the same people stay with you after launch.",
+  ],
+  values: [
+    { title: "Straight talk", body: "Clear quotes, honest timelines, and no jargon. If something won't work, we'll say so early." },
+    { title: "Built to last", body: "Fast, well-structured code you own outright, documented so anyone can pick it up." },
+    { title: "One team, start to finish", body: "Design, engineering and support under one roof, so nothing gets lost in a handover." },
+  ],
+};

@@ -4,12 +4,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { getServiceBySlug, services } from "@/lib/content";
-import { CaseStudy } from "@/components/CaseStudy";
 import { ProgressSteps } from "@/components/ProgressSteps";
 import { HeroFacts } from "@/components/HeroFacts";
 import { IncludedGrid } from "@/components/IncludedGrid";
 import { InstallSteps } from "@/components/InstallSteps";
-import { ServicePricing } from "@/components/ServicePricing";
 import { SpecularButton } from "@/components/SpecularButton";
 import { StickyBoard } from "@/components/StickyBoard";
 import { StackVisual } from "@/components/StackVisual";
@@ -109,15 +107,6 @@ export default async function ServicePage({ params }: Props) {
         <IncludedGrid items={service.included} {...theme.included} />
       </section>
 
-      <section id="cost" className="wrap section" style={{ paddingTop: 0 }}>
-        <div className="section-head" data-reveal>
-          <SplitHeading className="display display--h2">
-            What it <em>costs</em>
-          </SplitHeading>
-        </div>
-        <ServicePricing service={service} />
-      </section>
-
       <section className="wrap section" style={{ paddingTop: 0 }}>
         <div className="section-head" data-reveal>
           <SplitHeading className="display display--h2">How it runs</SplitHeading>
@@ -125,14 +114,6 @@ export default async function ServicePage({ params }: Props) {
         {theme.process()}
       </section>
 
-      {/* Only services with a real case study get a proof section. */}
-      {service.caseStudy && (
-        <section className="wrap section" style={{ paddingTop: 0 }}>
-          <div className="proof" data-reveal>
-            <CaseStudy study={service.caseStudy} kicker="Proof point" />
-          </div>
-        </section>
-      )}
     </PageTransition>
   );
 }

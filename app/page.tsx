@@ -79,6 +79,10 @@ export default function HomePage() {
               See the work behind each service.
             </SplitHeading>
             <p className="lede">Pick a service. See the proof.</p>
+            <Link href="/work" className="textlink textlink--accent">
+              View all work
+              <ArrowRight size={16} weight="bold" aria-hidden />
+            </Link>
           </div>
           <div className="explorer" data-reveal>
             <CaseStudyExplorer />

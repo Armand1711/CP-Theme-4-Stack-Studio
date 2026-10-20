@@ -30,7 +30,7 @@ export default function PricingPage() {
             Pay per project, or keep a dev team on a monthly retainer.
           </p>
         </div>
-        <div className="hero__mini load-in">
+        <div className="hero__mini autoplay load-in">
           <div style={i(2)}>
             <ScaleMini />
           </div>

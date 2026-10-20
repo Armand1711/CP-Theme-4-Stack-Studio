@@ -2,11 +2,13 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, Geist_Mono } from "next/font/google";
 import { DotField } from "@/components/DotField";
 import { Footer } from "@/components/Footer";
+import { HoverPlayback } from "@/components/HoverPlayback";
 import { Nav } from "@/components/Nav";
 import { RevealObserver } from "@/components/RevealObserver";
 import { RouteLoader } from "@/components/RouteLoader";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { TransitionOrigin } from "@/components/TransitionOrigin";
+import { siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const sans = Archivo({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-sans", display: "swap" });
@@ -16,6 +18,7 @@ const description =
   "Web, software, UI/UX design, and mobile apps, scoped as a single project or run as your standing dev team.";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Stack Studio: Your dev team, without the hiring",
     template: "Stack Studio: %s",
@@ -49,6 +52,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <RevealObserver />
+        <HoverPlayback />
         <ScrollToTop />
         <TransitionOrigin />
         <RouteLoader />

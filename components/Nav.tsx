@@ -5,12 +5,15 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { services, serviceHref } from "@/lib/content";
+import { isStandalonePage } from "@/lib/site";
 import { LogoWordmark } from "./Logo";
 import { SpecularButton } from "@/components/SpecularButton";
 
 const links = [
   ...services.map((s) => ({ href: serviceHref(s), label: s.navLabel })),
+  { href: "/work", label: "Work" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/about", label: "About" },
 ];
 
 export function Nav() {
@@ -52,6 +55,8 @@ export function Nav() {
       {l.label}
     </Link>
   ));
+
+  if (isStandalonePage(pathname)) return null;
 
   return (
     // Named so page transitions leave the header in place as a fixed reference point.

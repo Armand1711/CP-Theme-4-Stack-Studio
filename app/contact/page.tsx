@@ -28,7 +28,7 @@ export default function ContactPage() {
             Tell us what you&apos;re building. We&apos;ll reply within one business day.
           </p>
         </div>
-        <div className="hero__mini load-in">
+        <div className="hero__mini autoplay load-in">
           <div style={i(2)}>
             <MessageMini />
           </div>

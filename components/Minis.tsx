@@ -1,4 +1,15 @@
-import { Check, ChatCircleDots, NavigationArrow, PaperPlaneTilt, Phone, SolarPanel } from "@phosphor-icons/react/dist/ssr";
+import {
+  ChartLineUp,
+  Check,
+  Code,
+  DeviceMobile,
+  Globe,
+  NavigationArrow,
+  PaperPlaneTilt,
+  PenNib,
+  Phone,
+  RocketLaunch,
+} from "@phosphor-icons/react/dist/ssr";
 import { plans } from "@/lib/content";
 
 /*
@@ -88,48 +99,6 @@ export function TeamMini() {
   );
 }
 
-/** GC Solar case study: a visitor opens the site's chat, and a new lead lands in the CRM. */
-export function CaseMini() {
-  return (
-    <div className="mm mm--case" aria-hidden="true">
-      <div className="mm-case__browser">
-        <span className="mm-case__bar">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="mm-case__nav">
-          <SolarPanel size={14} weight="fill" />
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="mm-case__hero">
-          <span>
-            <i />
-            <i />
-            <b />
-          </span>
-          <span className="mm-case__sun" />
-        </span>
-        <span className="mm-case__chat">
-          <span className="mm-case__bubble">Hi, can I get a quote?</span>
-          <span className="mm-case__fab">
-            <ChatCircleDots size={18} weight="fill" />
-          </span>
-        </span>
-      </div>
-      <span className="mm-case__crm">
-        <span className="mm-case__crm-head">Zoho CRM</span>
-        <span className="mm-case__crm-row">
-          <Check size={12} weight="bold" />
-          New lead from website
-        </span>
-      </span>
-    </div>
-  );
-}
-
 /** Contact hero: a message types itself out, sends, and a confirmation lands. */
 export function MessageMini() {
   return (
@@ -186,6 +155,135 @@ export function CallMini() {
         <span className="mm-call__end">
           <Phone size={14} weight="fill" />
         </span>
+      </div>
+    </div>
+  );
+}
+
+/** About hero: one project moves through design, build and launch, handled by the same team throughout. */
+export function CrewMini() {
+  const steps = [
+    { label: "Design", detail: "Screens you can click through", Icon: PenNib },
+    { label: "Build", detail: "Fast, solid code", Icon: Code },
+    { label: "Launch", detail: "Live, with support after", Icon: RocketLaunch },
+  ];
+  return (
+    <div className="mm mm--crew" aria-hidden="true">
+      <div className="mm-crew">
+        <span className="mm-crew__head">
+          <b>Your project</b>
+          <span className="mm-crew__faces">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/team/enzo-contact.jpg" alt="" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/team/armand-contact.jpg" alt="" />
+          </span>
+        </span>
+        <i className="mm-crew__bar">
+          <b />
+        </i>
+        <span className="mm-crew__steps">
+          {steps.map(({ label, detail, Icon }) => (
+            <span key={label} className="mm-crew__step">
+              <span className="mm-crew__icon">
+                <Icon size={15} weight="bold" />
+              </span>
+              <span className="mm-crew__label">
+                {label}
+                <small>{detail}</small>
+              </span>
+              <span className="mm-crew__check">
+                <Check size={11} weight="bold" />
+              </span>
+            </span>
+          ))}
+        </span>
+      </div>
+      <span className="mm-crew__toast">
+        <RocketLaunch size={14} weight="fill" />
+        Launched. Same team, start to finish.
+      </span>
+    </div>
+  );
+}
+
+/** Work hero: a fanned deck of live projects (a site, a dashboard, an app); the front one slides away to the back. */
+export function DeckMini() {
+  return (
+    <div className="mm mm--deck" aria-hidden="true">
+      <div className="mm-deck">
+        <div className="mm-deck__card">
+          <span className="mm-deck__bar">
+            <i />
+            <i />
+            <i />
+            <em>mpgf.org.za</em>
+          </span>
+          <span className="mm-deck__body mm-deck__web">
+            <span>
+              <b />
+              <i />
+              <i />
+              <u />
+            </span>
+            <span className="mm-deck__sun" />
+          </span>
+          <span className="mm-deck__tag">
+            <Globe size={12} weight="bold" />
+            Website
+          </span>
+          <span className="mm-deck__live">Live</span>
+        </div>
+        <div className="mm-deck__card">
+          <span className="mm-deck__bar">
+            <i />
+            <i />
+            <i />
+            <em>dashboard</em>
+          </span>
+          <span className="mm-deck__body mm-deck__dash">
+            <span className="mm-deck__side">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            <span className="mm-deck__chart">
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+          </span>
+          <span className="mm-deck__tag">
+            <ChartLineUp size={12} weight="bold" />
+            Software
+          </span>
+          <span className="mm-deck__live">Live</span>
+        </div>
+        <div className="mm-deck__card">
+          <span className="mm-deck__bar">
+            <i />
+            <i />
+            <i />
+            <em>app</em>
+          </span>
+          <span className="mm-deck__body mm-deck__app">
+            <span className="mm-deck__phone">
+              <i />
+              <i />
+              <i />
+              <b />
+            </span>
+          </span>
+          <span className="mm-deck__tag">
+            <DeviceMobile size={12} weight="bold" />
+            App
+          </span>
+          <span className="mm-deck__live">Live</span>
+        </div>
       </div>
     </div>
   );

@@ -75,8 +75,12 @@ export function CaseStudyExplorer() {
           aria-labelledby={`${baseId}-tab-${active}`}
           className="explorer__panel deck__top"
         >
-          {current.caseStudy ? (
-            <CaseStudy study={current.caseStudy} kicker={`${current.name} case study`} href={serviceHref(current)} />
+          {current.caseStudies.length ? (
+            <div className="cases">
+              {current.caseStudies.map((study) => (
+                <CaseStudy key={study.title} study={study} kicker={`${current.name} case study`} href={serviceHref(current)} />
+              ))}
+            </div>
           ) : (
             <div className="coming-soon">
               <h3>Case study coming soon</h3>
