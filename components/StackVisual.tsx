@@ -17,7 +17,7 @@ import { ServiceMini } from "./ServicesBento";
  *   full turn, and a spring carries the release velocity in); a tap sends a bounce up through the layers.
  * - A service layer: drag to pull that layer out sideways (1:1 along the layer's own axis, rubber-banded,
  *   springing back with the release velocity); a tap, or a hard throw, opens it as a card.
- * - Hover (mouse): the stack fans apart; hovering a layer lifts it, shows its price, and tells the hero
+ * - Hover (mouse): the stack fans apart; hovering a layer lifts it and tells the hero
  *   ticker to show that service. When the ticker moves on by itself, the matching layer lifts.
  *
  * The opened card flies out of its layer and turns to face you (FLIP from the layer's on-screen box),
@@ -453,7 +453,6 @@ export function StackVisual({ active, lost = false }: { active?: ServiceKey; los
             <span className="plate__label">
               {s.number}
               <b>{s.name}</b>
-              <span className="plate__price">From {s.fromPrice}</span>
             </span>
           </div>
         ))}
@@ -476,9 +475,6 @@ export function StackVisual({ active, lost = false }: { active?: ServiceKey; los
           </p>
           <p className="stack-card__lede">{card.lede}</p>
           <div className="stack-card__foot">
-            <span className="stack-card__price">
-              From <b>{card.fromPrice}</b>
-            </span>
             <Link href={serviceHref(card)} className="textlink textlink--accent">
               Explore
               <ArrowRight size={16} weight="bold" aria-hidden />

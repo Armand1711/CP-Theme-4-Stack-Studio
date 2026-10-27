@@ -101,9 +101,6 @@ export function ServicesBento() {
             <span className="bento__lede">{s.lede}</span>
             <ServiceMini kind={s.key} />
             <span className="bento__foot">
-              <span className="bento__price">
-                From <b>{s.fromPrice}</b>
-              </span>
               <span className="bento__arrow" aria-hidden="true">
                 <ArrowUpRight size={20} weight="bold" />
               </span>

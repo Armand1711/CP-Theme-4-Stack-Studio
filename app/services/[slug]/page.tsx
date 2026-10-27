@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "@phosphor-icons/react/dist/ssr";
 import { getServiceBySlug, services } from "@/lib/content";
 import { ProgressSteps } from "@/components/ProgressSteps";
-import { HeroFacts } from "@/components/HeroFacts";
 import { IncludedGrid } from "@/components/IncludedGrid";
 import { InstallSteps } from "@/components/InstallSteps";
 import { SpecularButton } from "@/components/SpecularButton";
@@ -13,7 +12,7 @@ import { StickyBoard } from "@/components/StickyBoard";
 import { StackVisual } from "@/components/StackVisual";
 import { TechHeading } from "@/components/TechHeading";
 import { CompareDemo } from "@/components/demos/CompareDemo";
-import { PipelineDemo } from "@/components/demos/PipelineDemo";
+import { SavingsDemo } from "@/components/demos/SavingsDemo";
 import { ResponsiveDemo } from "@/components/demos/ResponsiveDemo";
 import { SheetDemo } from "@/components/demos/SheetDemo";
 import type { ServiceKey } from "@/lib/content";
@@ -22,7 +21,7 @@ import { PageTransition } from "@/components/PageTransition";
 
 const DEMOS: Record<ServiceKey, () => React.ReactNode> = {
   web: () => <ResponsiveDemo />,
-  software: () => <PipelineDemo />,
+  software: () => <SavingsDemo />,
   uiux: () => <CompareDemo />,
   mobile: () => <SheetDemo />,
 };
@@ -77,8 +76,7 @@ export default async function ServicePage({ params }: Props) {
           <p className="lede" style={i(2)}>
             {service.lede}
           </p>
-          <HeroFacts service={service} style={i(3)} />
-          <div className="hero__actions" style={i(4)}>
+          <div className="hero__actions" style={i(3)}>
             <SpecularButton href="/contact" className="btn btn--primary">
               Start a Project
               <ArrowUpRight size={18} weight="bold" aria-hidden />

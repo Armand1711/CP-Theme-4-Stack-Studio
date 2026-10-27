@@ -138,7 +138,6 @@ export function PricingPlanner() {
                 <span>
                   From <b>{s.fromPrice}</b>
                 </span>
-                <span>{s.timeline}</span>
               </span>
               <ArrowRight className="stile__arrow" size={18} weight="bold" aria-hidden />
             </Link>

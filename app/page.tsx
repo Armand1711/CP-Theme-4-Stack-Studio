@@ -7,7 +7,6 @@ import { HeroTicker } from "@/components/HeroTicker";
 import { CaseStudyExplorer } from "@/components/CaseStudyExplorer";
 import { ContactDetails } from "@/components/ContactDetails";
 import { ContactForm } from "@/components/ContactForm";
-import { PlanLadder } from "@/components/PlanLadder";
 import { SpecularButton } from "@/components/SpecularButton";
 import { StackVisual } from "@/components/StackVisual";
 import { Magnetic } from "@/components/Magnetic";
@@ -22,7 +21,6 @@ const i = (n: number) => ({ "--i": n }) as CSSProperties;
 const RAIL = [
   { id: "services", label: "Services" },
   { id: "work", label: "Work" },
-  { id: "plans", label: "Plans" },
   { id: "contact", label: "Contact" },
 ];
 
@@ -88,20 +86,6 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Plans: open rows */}
-        <section id="plans" className="wrap section" style={{ paddingTop: 0 }}>
-          <div className="section-head" data-reveal>
-            <SplitHeading className="display display--h2">
-              Scoped to how you grow.
-            </SplitHeading>
-            <p className="lede">Start with one project. Scale when you are ready.</p>
-            <Link href="/pricing" className="textlink textlink--accent">
-              Compare plans in detail
-              <ArrowRight size={16} weight="bold" aria-hidden />
-            </Link>
-          </div>
-          <PlanLadder />
-        </section>
 
         {/* Contact: form + details */}
         <section id="contact" className="wrap section" style={{ paddingTop: 0 }}>

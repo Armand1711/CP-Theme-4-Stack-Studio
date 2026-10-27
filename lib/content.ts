@@ -36,8 +36,6 @@ export type Service = {
   lede: string;
   /** Starting price of a one-off project in this service, shown as "From {fromPrice}". */
   fromPrice: string;
-  /** Typical length of a one-off project. */
-  timeline: string;
   /** What a typical one-off project covers: three short lines. */
   projectIncludes: string[];
   included: IncludedItem[];
@@ -70,7 +68,6 @@ export const services: Service[] = [
     titleEm: "Development",
     lede: "Websites and web apps that load fast and bring in leads.",
     fromPrice: "[R__]",
-    timeline: "[_ to _ weeks]",
     projectIncludes: ["Custom design for your brand", "Works on phone, tablet and desktop", "Launch and handover"],
     included: [
       { id: "marketing", title: "Marketing & brochure sites", body: "Fast, conversion-focused sites for outreach and brand presence." },
@@ -91,7 +88,6 @@ export const services: Service[] = [
     titleEm: "Development",
     lede: "Custom tools that cut the manual work out of your day.",
     fromPrice: "[R__]",
-    timeline: "[_ to _ weeks]",
     projectIncludes: ["A map of the workflow to fix", "One tool or integration, built", "Training and handover"],
     included: [
       { id: "tools", title: "Internal tools & dashboards", body: "Custom tools built around how your team already works." },
@@ -100,7 +96,7 @@ export const services: Service[] = [
       { id: "automation", title: "Workflow automation", body: "Cut manual steps out of repetitive business processes." },
     ],
     caseStudies: [],
-    demo: { lead: "Watch the busywork", em: "disappear.", lede: "Press Run. Click a step to inspect its data." },
+    demo: { lead: "Hours of admin,", em: "handled in minutes.", lede: "One new enquiry, handled by hand and with software built for your business. Then see what it adds up to for you." },
   },
   {
     key: "uiux",
@@ -112,7 +108,6 @@ export const services: Service[] = [
     titleEm: "Design",
     lede: "Screens you can click and test before anything gets built.",
     fromPrice: "[R__]",
-    timeline: "[_ to _ weeks]",
     projectIncludes: ["Research with real users", "A clickable prototype", "Design files ready to build"],
     included: [
       { id: "product", title: "Product design", body: "End-to-end design for web and mobile products." },
@@ -133,7 +128,6 @@ export const services: Service[] = [
     titleEm: "Mobile Apps",
     lede: "Apps for iOS, Android, Windows and macOS, from one team.",
     fromPrice: "[R__]",
-    timeline: "[_ to _ weeks]",
     projectIncludes: ["iOS and Android from one codebase", "App store submission", "Launch support"],
     included: [
       { id: "native", title: "iOS & Android apps", body: "Native-feeling apps built for both major platforms." },
