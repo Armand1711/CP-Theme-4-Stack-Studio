@@ -17,22 +17,12 @@ Built with **Next.js 16** (App Router), **React 19** and **TypeScript**, styled 
 
 ## Showcase
 
-### Videos
+### Video
 
-Click a preview to play the video.
-
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <a href="docs/media/macbook-demo.mp4"><img src="docs/media/mockup-macbook.jpg" alt="Play the desktop demo"></a><br>
-      <sub>▶ <a href="docs/media/macbook-demo.mp4">Desktop walkthrough (MacBook Pro)</a></sub>
-    </td>
-    <td width="50%" align="center">
-      <a href="docs/media/iphone-demo.mp4"><img src="docs/media/mockup-iphone.jpg" alt="Play the mobile demo"></a><br>
-      <sub>▶ <a href="docs/media/iphone-demo.mp4">Mobile walkthrough (iPhone)</a></sub>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <a href="docs/media/demo-video.mp4"><img src="docs/media/mockup-macbook.jpg" alt="Play the Stack Studio demo video" width="70%"></a><br>
+  <sub>▶ <a href="docs/media/demo-video.mp4">Watch the demo video</a>: a desktop walkthrough of the site.</sub>
+</p>
 
 ### Full-page screenshots
 
@@ -157,13 +147,3 @@ npx cloudflared tunnel --url http://localhost:3000
 The site is set up for **Netlify**. During a Netlify build, `next.config.ts` points QR codes and card links at the site being built: the primary URL for production, and the deploy URL for previews. On any other host, production falls back to `https://stackstudio.co.za` unless you set `NEXT_PUBLIC_SITE_URL`.
 
 Remember to set `CONTACT_WEBHOOK_URL` in the host's environment, or the contact form will return errors.
-
-## Before launch
-
-Some placeholders are intentional and still need real content:
-
-- [ ] Search `lib/content.ts` for `[`. The service "from" prices, the plan hours and team details, and the FAQ are all bracketed placeholders.
-- [ ] `TODO` in `components/Footer.tsx`: link the privacy and terms pages.
-- [ ] `TODO` in `components/ContactDetails.tsx`: link the social profiles.
-- [ ] Set `CONTACT_WEBHOOK_URL` in production.
-- [ ] Make sure the site is live at https://stackstudio.co.za **before printing QR codes or business cards**, because they link there.
